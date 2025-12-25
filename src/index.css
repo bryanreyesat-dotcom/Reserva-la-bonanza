@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Opcional: Esto hace que las fuentes se vean más nítidas */
+body {
+  @apply antialiased bg-gray-50 text-gray-800;
+}
