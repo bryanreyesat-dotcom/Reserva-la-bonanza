@@ -26,7 +26,7 @@ const Navbar = ({ user, onLogout }) => {
               />
               </div>
               {/* Texto del logo ajustado ligeramente en móvil */}
-              <span className="font-bold text-lg md:text-xl text-gray-800 tracking-tight">Reserva<span className="text-indigo-600">Bonanza</span></span>
+              <span className="font-bold text-lg md:text-xl text-gray-800 tracking-tight">Reserva<span className="text-indigo-600"> la<span className="text-indigo-600"> &nbsp; Bonanza</span></span></span>
             </Link>
 
             {/* --- B. MENÚ DE ESCRITORIO --- */}
