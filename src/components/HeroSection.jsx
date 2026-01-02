@@ -1,24 +1,24 @@
 import React from 'react';
 import { MapPin, Calendar, User, Search, Star } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext'; 
 
-// NOTA: En tu proyecto local, mantén tu importación original.
-// Aquí la comento y defino BRAND localmente para que la vista previa funcione sin el archivo externo.
 // import { BRAND } from '../../config/brand'; 
 import heroImage from "../assets/hero_bg.jpg"
 
 const BRAND = {
   colors: {
     accentBg: 'bg-indigo-600',
-    bgPrimary: 'bg-gray-900' // Ajustado al color que usas en el className (bg-gray-900)
+    bgPrimary: 'bg-gray-900' 
   }
 };
 
 export default function HeroSection() {
+  const { t } = useLanguage(); 
+
   return (
     <>
-      {/* 1. HERO SECTION (FOTO Y BUSCADOR) */}
+      {/* 1. HERO SECTION */}
       <div className="relative h-[650px] w-full bg-gray-900 flex items-center justify-center text-center px-4 overflow-hidden">
-        {/* Imagen de fondo */}
         <img 
           src={heroImage} 
           alt="Santa Marta" 
@@ -29,42 +29,62 @@ export default function HeroSection() {
           <span className="inline-block py-1 px-4 rounded-full bg-white/10 backdrop-blur-md text-white text-xs font-bold tracking-widest uppercase mb-6 border border-white/20">
             Santa Marta, Colombia
           </span>
+          
           <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-xl tracking-tight leading-[1.1]">
-            Encuentra tu hogar ideal <br/> donde tu lo sueñes
+            {t('hero.title')}
           </h2>
           <p className="text-lg md:text-2xl text-gray-100 font-light mb-10 max-w-2xl mx-auto drop-shadow-md">
-             Descubre propiedades exclusivas a nivel nacional e internacional. El lugar perfecto para vivir o invertir te está esperando.
+             {t('hero.subtitle')}
           </p>
           
-          {/* BUSCADOR FLOTANTE */}
+          {/* --- BUSCADOR TRADUCIDO --- */}
           <div className="bg-white p-2 md:p-3 rounded-3xl md:rounded-full shadow-2xl flex flex-col md:flex-row items-center max-w-5xl mx-auto border border-white/20 backdrop-blur-sm">
+            
             {/* Campo Destino */}
             <div className="flex-1 w-full px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100 text-left">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Destino</label>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                {t('hero.search_dest')}
+              </label>
               <div className="flex items-center">
                 <MapPin size={18} className={`text-gray-400 mr-2`} />
+                {/* Nota: 'Rodadero' es nombre propio, no se suele traducir, pero podrías hacerlo si quisieras */}
                 <input type="text" readOnly value="Rodadero, Sta Marta" className="w-full font-bold text-gray-700 outline-none bg-transparent" />
               </div>
             </div>
+
             {/* Campo Fechas */}
             <div className="flex-1 w-full px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100 text-left">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Fechas</label>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                {t('hero.search_dates')}
+              </label>
               <div className="flex items-center">
                 <Calendar size={18} className="text-gray-400 mr-2" />
-                <input type="text" placeholder="Seleccionar fechas" className="w-full font-bold text-gray-700 outline-none bg-transparent" />
+                <input 
+                  type="text" 
+                  placeholder={t('hero.search_dates_ph')} 
+                  className="w-full font-bold text-gray-700 outline-none bg-transparent" 
+                />
               </div>
             </div>
+
             {/* Campo Huéspedes */}
             <div className="flex-1 w-full px-6 py-3 text-left">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Huéspedes</label>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                {t('hero.search_guests')}
+              </label>
               <div className="flex items-center">
                 <User size={18} className="text-gray-400 mr-2" />
-                <input type="text" placeholder="2 Adultos" className="w-full font-bold text-gray-700 outline-none bg-transparent" />
+                <input 
+                  type="text" 
+                  placeholder={t('hero.search_guests_ph')} 
+                  className="w-full font-bold text-gray-700 outline-none bg-transparent" 
+                />
               </div>
             </div>
+
             {/* Botón Buscar */}
             <button className={`w-full md:w-auto ${BRAND.colors.accentBg} hover:opacity-90 text-white font-bold h-14 md:h-12 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 flex items-center justify-center gap-2 mt-2 md:mt-0`}>
-              <Search size={20} /> <span className="md:hidden">BUSCAR</span>
+              <Search size={20} /> <span className="md:hidden">{t('hero.search_btn')}</span>
             </button>
           </div>
         </div>

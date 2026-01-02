@@ -1,8 +1,10 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+// Importamos el hook de idioma
+import { useLanguage } from '../context/LanguageContext';
 
-// 1. IMPORTACIONES HABILITADAS (Ya no están comentadas)
+// 1. IMPORTACIONES HABILITADAS
 import PropertyCard from './PropertyCard';
 
 // Importación de imágenes desde assets
@@ -62,6 +64,9 @@ const allPropertiesData = [
 ];
 
 const AllProperties = () => {
+  // Activamos la traducción
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-7xl mx-auto">
@@ -69,15 +74,22 @@ const AllProperties = () => {
         {/* Encabezado con botón de volver */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Catálogo Completo</h1>
-            <p className="text-gray-500 mt-1">Explora nuestras 5 opciones exclusivas en Santa Marta</p>
+            {/* Título Traducido */}
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t('catalog.title')}
+            </h1>
+            {/* Subtítulo Traducido */}
+            <p className="text-gray-500 mt-1">
+              {t('catalog.subtitle')}
+            </p>
           </div>
           
           <Link 
             to="/" 
             className="flex items-center gap-2 bg-white text-gray-700 px-6 py-3 rounded-full shadow-sm hover:bg-gray-100 font-bold border border-gray-200 transition-all"
           >
-            <ArrowLeft size={20} /> Volver al Inicio
+            {/* Botón Traducido */}
+            <ArrowLeft size={20} /> {t('catalog.back_button')}
           </Link>
         </div>
 

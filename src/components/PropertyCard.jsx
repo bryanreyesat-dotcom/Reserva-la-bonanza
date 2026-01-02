@@ -1,7 +1,12 @@
 import React from 'react';
 import { MapPin, Star, ArrowRight, Heart } from 'lucide-react';
+// Importamos el hook para traducir
+import { useLanguage } from '../context/LanguageContext';
 
 const PropertyCard = ({ img, title, type, location, price, rating, onClick }) => {
+  // Activamos la función t
+  const { t } = useLanguage();
+
   return (
     <div 
       onClick={onClick}
@@ -50,7 +55,10 @@ const PropertyCard = ({ img, title, type, location, price, rating, onClick }) =>
         {/* Precio y Botón de Acción */}
         <div className="pt-5 border-t border-gray-100 flex items-center justify-between mt-auto">
           <div>
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Precio por noche</span>
+            {/* AQUÍ ESTÁ EL CAMBIO: Texto traducido */}
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+              {t('properties.price_night')}
+            </span>
             <div className="flex items-baseline gap-1">
               <span className="text-xl font-extrabold text-indigo-600">{price}</span>
             </div>

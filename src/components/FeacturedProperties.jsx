@@ -1,15 +1,21 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom'; // 1. Importamos Link
-import PropertyCard from './PropertyCard'; // Asegúrate de que esta ruta sea correcta en tu proyecto
-import { BRAND } from '../config/brand'; // Si usas tu archivo de configuración
+import { Link } from 'react-router-dom';
+import PropertyCard from './PropertyCard'; 
+import { BRAND } from '../config/brand';
+// Importamos el hook de idioma
+import { useLanguage } from '../context/LanguageContext';
 
 import imgTaganga from "../assets/hotel_taganga.jpg";
 import imgHuasipungo from "../assets/hotel_huasipungo.jpg";
 import imgSalinas from "../assets/hotel_salinas.jpg"
 
 const FeaturedProperties = () => {
-  // Datos de ejemplo para la vista previa en el Home (Solo 3)
+  // Activamos la traducción
+  const { t } = useLanguage();
+
+  // Datos de ejemplo (NOTA: Los títulos y nombres de lugares suelen dejarse en su idioma original
+  // o venir de una base de datos, por eso estos textos no los metemos en translation.js)
   const featuredProperties = [
     {
       id: 1,
@@ -43,10 +49,14 @@ const FeaturedProperties = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-20 bg-gray-50">
       
-      {/* Encabezado */}
+      {/* Encabezado Traducido */}
       <div className="text-center mb-16">
-        <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Alojamientos Destacados</h3>
-        <p className="text-gray-500 max-w-2xl mx-auto text-lg">Selección exclusiva, administrados directamente para garantizar tu tranquilidad.</p>
+        <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          {t('properties.section_title')}
+        </h3>
+        <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+          {t('properties.section_subtitle')}
+        </p>
       </div>
 
       {/* Grid de Propiedades */}
@@ -60,13 +70,13 @@ const FeaturedProperties = () => {
         ))}
       </div>
 
-      {/* Botón "Ver todas" actualizado con Link */}
+      {/* Botón Traducido */}
       <div className="text-center mt-16">
         <Link 
           to="/propiedades" 
           className={`inline-flex items-center gap-2 border-2 ${BRAND.colors.borderPrimary || 'border-gray-900'} ${BRAND.colors.primary || 'text-gray-900'} font-bold py-3 px-10 rounded-full hover:bg-teal-50 transition-colors mx-auto`}
         >
-          Ver todas las propiedades <ArrowRight size={18} />
+          {t('properties.btn_view_all')} <ArrowRight size={18} />
         </Link>
       </div>
       

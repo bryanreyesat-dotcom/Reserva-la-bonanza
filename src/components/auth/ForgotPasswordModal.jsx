@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import { Mail, Lock } from 'lucide-react'; // Asegúrate de tener instalada la librería lucide-react
+import { Mail, Lock } from 'lucide-react';
+// 1. Importar el hook
+import { useLanguage } from '../../context/LanguageContext';
 
-// Usamos 'export const' para coincidir con la importación con llaves { } en tu App.jsx
 export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
+  // 2. Activar traducción
+  const { t } = useLanguage();
+  
   const [email, setEmail] = useState('');
 
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí iría la lógica real de envío de correo
-    showToast(`Hemos enviado un enlace de recuperación a ${email}`, 'success');
+    // 3. CAMBIO: Mensaje Toast dinámico con traducción
+    showToast(`${t('recover.toast_success')} ${email}`, 'success');
     setEmail('');
     onClose();
   };
@@ -22,13 +26,19 @@ export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
             <Lock size={32} />
           </div>
-          <h3 className="text-xl font-bold text-gray-800">Recuperar Contraseña</h3>
-          <p className="text-sm text-gray-500 mt-2">Ingresa tu correo y te enviaremos las instrucciones.</p>
+          <h3 className="text-xl font-bold text-gray-800">
+            {t('recover.title')}
+          </h3>
+          <p className="text-sm text-gray-500 mt-2">
+            {t('recover.desc')}
+          </p>
         </div>
         
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label className="block text-xs font-medium text-gray-500 mb-1">Email Registrado</label>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+                {t('recover.label_email')}
+            </label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
               <input 
@@ -37,17 +47,24 @@ export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
-                placeholder="ejemplo@correo.com" 
+                placeholder={t('recover.placeholder')} 
               />
             </div>
           </div>
           
           <div className="flex space-x-3">
-            <button type="button" onClick={onClose} className="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors">
-              Cancelar
+            <button 
+                type="button" 
+                onClick={onClose} 
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+            >
+              {t('recover.btn_cancel')}
             </button>
-            <button type="submit" className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-md transition-colors">
-              Enviar
+            <button 
+                type="submit" 
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-md transition-colors"
+            >
+              {t('recover.btn_send')}
             </button>
           </div>
         </form>

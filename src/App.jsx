@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Briefcase, Building } from 'lucide-react'; 
+// AÑADIDO: Importamos 'useLanguage' para poder traducir textos
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
 // 1. IMPORTACIONES (Tus componentes reales)
 import Navbar from './components/Navbar'; 
@@ -25,6 +27,9 @@ const LoginPage = ({ onLogin }) => {
   const [activeTab, setActiveTab] = useState('login');
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  
+  // AÑADIDO: Hook de traducción
+  const { t } = useLanguage();
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });
@@ -36,11 +41,11 @@ const LoginPage = ({ onLogin }) => {
     onLogin(user); 
 
     let message = '';
+    // Usamos traducciones también en los mensajes del Toast
     switch(user.role) {
-        case 'admin': message = 'Bienvenido Jefe. Redirigiendo a Admin...'; break;
-        case 'hotel': message = `Hola ${user.name}. Redirigiendo a Panel de Hoteles...`; break;
-        case 'client_vip': message = `¡Hola VIP ${user.name}! Ofertas exclusivas...`; break;
-        default: message = `Bienvenido ${user.name}. Buscando propiedades...`;
+        case 'admin': message = 'Admin: ' + t('loginPage.toast_welcome'); break;
+        case 'hotel': message = 'Hotel: ' + t('loginPage.toast_welcome'); break;
+        default: message = `${t('loginPage.toast_welcome')} ${user.name}. ${t('loginPage.toast_searching')}`;
     }
     showToast(message, 'success');
   };
@@ -62,29 +67,40 @@ const LoginPage = ({ onLogin }) => {
              <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3"></div>
              
              <div className="relative z-10">
-                <h2 className="text-3xl font-bold mb-2">Bienvenido</h2>
-                <p className="text-blue-100">Accede a tu cuenta de viajero o gestiona tu hotel.</p>
+                {/* TEXTOS TRADUCIDOS */}
+                <h2 className="text-3xl font-bold mb-2">{t('loginPage.welcome')}</h2>
+                <p className="text-blue-100">{t('loginPage.subtitle')}</p>
              </div>
 
              <div className="relative z-10 space-y-4">
                 <div className="flex items-center gap-3">
                     <div className="bg-white/20 p-2 rounded-full"><Briefcase size={20}/></div>
-                    <span className="text-sm">Viajeros frecuentes</span>
+                    <span className="text-sm">{t('loginPage.travelers')}</span>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="bg-white/20 p-2 rounded-full"><Building size={20}/></div>
-                    <span className="text-sm">Gestión Hotelera</span>
+                    <span className="text-sm">{t('loginPage.hotel_mgmt')}</span>
                 </div>
              </div>
 
-             <div className="relative z-10 text-xs opacity-70">&copy; 2026 ReservaLaBonanza</div>
+             <div className="relative z-10 text-xs opacity-70">{t('loginPage.copyright')}</div>
         </div>
 
         {/* LADO DERECHO */}
         <div className="w-full md:w-1/2 bg-white flex flex-col">
             <div className="flex w-full border-b border-gray-100">
-                <button onClick={() => setActiveTab('login')} className={`flex-1 py-4 text-sm font-semibold transition-colors ${activeTab === 'login' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400'}`}>Iniciar Sesión</button>
-                <button onClick={() => setActiveTab('register')} className={`flex-1 py-4 text-sm font-semibold transition-colors ${activeTab === 'register' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400'}`}>Registrarse</button>
+                <button 
+                  onClick={() => setActiveTab('login')} 
+                  className={`flex-1 py-4 text-sm font-semibold transition-colors ${activeTab === 'login' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400'}`}
+                >
+                  {t('loginPage.tab_login')}
+                </button>
+                <button 
+                  onClick={() => setActiveTab('register')} 
+                  className={`flex-1 py-4 text-sm font-semibold transition-colors ${activeTab === 'register' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400'}`}
+                >
+                  {t('loginPage.tab_register')}
+                </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-8 relative">
@@ -119,6 +135,7 @@ function App() {
   const handleLogout = () => setUser(null);
 
   return (
+    <LanguageProvider>
     <Router>
       <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-800">
         
@@ -145,6 +162,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </LanguageProvider>
   );
 }
 
