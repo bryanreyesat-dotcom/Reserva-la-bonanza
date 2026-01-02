@@ -1,0 +1,19 @@
+# Esta configuración le dice a Netlify dónde buscar tu página web
+# y le impide intentar "construir" el backend de Node.js
+
+[build]
+  # 1. Le decimos que el Frontend vive en la carpeta "client"
+  # (Si NO moviste tus archivos a una carpeta client y siguen en la raíz, borra esta línea 'base')
+
+
+  # 2. Le decimos dónde guardará Vite los archivos listos
+  publish = "dist"
+
+  # 3. El comando para construir la página
+  command = "npm run build"
+
+# Esta parte es vital para React (evita errores 404 al recargar páginas)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

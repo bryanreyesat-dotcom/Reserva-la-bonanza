@@ -21,4 +21,14 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.sw
+
+# Ignorar archivos de claves secretas (MUY IMPORTANTE)
+.env
+.env.local
+*.log
+
+# Ignorar carpetas de construcción
+dist/
+build/
+

@@ -4,12 +4,15 @@ import { Briefcase, Building } from 'lucide-react';
 // AÑADIDO: Importamos 'useLanguage' para poder traducir textos
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
+import TestBackend from './components/TestBackend';
+
 // 1. IMPORTACIONES (Tus componentes reales)
 import Navbar from './components/Navbar'; 
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection'; 
 import FeaturedProperties from './components/FeacturedProperties';
 import AllProperties from './components/AllProperties';
+import BackendStatus from './BackendStatus';
 
 // Asegúrate de que esta ruta sea correcta o ajustala si está en otra carpeta
 import fondoLogin from "./assets/hero_bg.jpg"; 
@@ -162,7 +165,10 @@ function App() {
         <Footer />
       </div>
     </Router>
+    <TestBackend />
+    <BackendStatus />
     </LanguageProvider>
+    
   );
 }
 
