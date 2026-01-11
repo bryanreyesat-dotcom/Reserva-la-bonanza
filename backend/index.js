@@ -1,18 +1,27 @@
-const express = require('express');
-const cors = require('cors');
-const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config();
+/* ========================================================================
+ * SECCIÓN 1: IMPORTACIONES Y CONFIGURACIÓN INICIAL
+ * ======================================================================== */
+import express from 'express';
+import cors from 'cors';
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+import process from 'process'; 
 
-// 1. Configuración del Servidor
+// Cargar variables de entorno
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 2. Middlewares (Permisos y formato de datos)
-app.use(cors()); // Permite conexiones desde tu Frontend (React)
-app.use(express.json()); // Permite recibir datos en formato JSON
+/* ========================================================================
+ * SECCIÓN 2: MIDDLEWARES (Seguridad y Formato)
+ * ======================================================================== */
+app.use(cors());         // Permite conexión desde el Frontend
+app.use(express.json()); // Habilita lectura de JSON en el body
 
-// 3. Conexión a Supabase (Backend)
-// Intenta leer las llaves del archivo .env
+/* ========================================================================
+ * SECCIÓN 3: CONEXIÓN A BASE DE DATOS (SUPABASE)
+ * ======================================================================== */
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
 
@@ -20,19 +29,28 @@ let supabase;
 
 if (supabaseUrl && supabaseKey) {
     supabase = createClient(supabaseUrl, supabaseKey);
-    console.log('✅ Conexión a Supabase establecida correctamente.');
+    console.log('✅ [DB] Conexión a Supabase establecida.');
 } else {
-    console.warn('⚠️ ADVERTENCIA: No se encontraron las llaves de Supabase en el archivo .env');
+    console.warn('⚠️ [DB] ADVERTENCIA: No se encontraron las llaves en .env');
 }
 
-// 4. Rutas (Endpoints)
+// --- SOLUCIÓN AL ERROR ---
+// Middleware para inyectar Supabase en cada petición (Así la variable se "usa")
+app.use((req, res, next) => {
+    req.supabase = supabase;
+    next();
+});
 
-// Ruta de prueba base
+/* ========================================================================
+ * SECCIÓN 4: RUTAS Y ENDPOINTS (API)
+ * ======================================================================== */
+
+// --- 4.1 RUTA DE PRUEBA (Health Check) ---
 app.get('/', (req, res) => {
     res.send('🚀 Servidor Backend de Inmobiliaria funcionando correctamente.');
 });
 
-// Ejemplo: Ruta para calcular precios (Lógica de negocio segura)
+// --- 4.2 RUTA DE COTIZACIÓN (Ejemplo de Lógica de Negocio) ---
 app.post('/api/reservas/cotizar', (req, res) => {
     try {
         const { precioNoche, noches } = req.body;
@@ -41,9 +59,8 @@ app.post('/api/reservas/cotizar', (req, res) => {
             return res.status(400).json({ error: 'Faltan datos para cotizar.' });
         }
 
-        // Simulación de cálculo complejo (Impuestos, tarifas, descuentos)
         const subtotal = precioNoche * noches;
-        const tarifaServicio = subtotal * 0.10; // 10%
+        const tarifaServicio = subtotal * 0.10; // 10% de servicio
         const total = subtotal + tarifaServicio;
 
         res.json({
@@ -59,7 +76,9 @@ app.post('/api/reservas/cotizar', (req, res) => {
     }
 });
 
-// 5. Iniciar el Servidor
+/* ========================================================================
+ * SECCIÓN 5: INICIALIZACIÓN DEL SERVIDOR
+ * ======================================================================== */
 app.listen(PORT, () => {
     console.log(`\n---------------------------------------------------------`);
     console.log(`📡 Servidor escuchando en: http://localhost:${PORT}`);

@@ -1,52 +1,95 @@
+/* ========================================================================
+ * SECCIÓN 1: IMPORTACIONES
+ * ======================================================================== */
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Globe } from 'lucide-react';
+import { Globe, ChevronDown, Check } from 'lucide-react';
 
+/* ========================================================================
+ * SECCIÓN 2: CONFIGURACIÓN
+ * ======================================================================== */
+const LANGUAGES = [
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' }
+];
+
+/* ========================================================================
+ * SECCIÓN 3: COMPONENTE PRINCIPAL
+ * ======================================================================== */
 const LanguageSelector = () => {
+  // 3.1 Hooks
   const { language, switchLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
-  const languages = [
-    { code: 'es', label: 'Español', flag: '🇪🇸' },
-    { code: 'en', label: 'English', flag: '🇺🇸' },
-    { code: 'fr', label: 'Français', flag: '🇫🇷' }
-  ];
+  // 3.2 Lógica
+  const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
 
-  const currentLang = languages.find(l => l.code === language) || languages[0];
+  const handleSelect = (code) => {
+    switchLanguage(code);
+    setIsOpen(false);
+  };
 
+/* ========================================================================
+ * SECCIÓN 4: RENDERIZADO (JSX)
+ * ======================================================================== */
   return (
     <div className="relative z-50">
+      
+      {/* 4.1 Botón Activador */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 font-medium border border-transparent hover:border-gray-200"
+        className={`
+          flex items-center gap-2 px-3 py-2 rounded-full 
+          transition-all duration-200 border
+          ${isOpen ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-transparent border-transparent hover:bg-gray-100 text-gray-700'}
+        `}
+        title="Cambiar idioma / Change language"
       >
         <Globe size={18} />
-        <span className="hidden md:inline">{currentLang.flag}</span>
-        <span className="text-sm uppercase">{language}</span>
+        <span className="hidden md:inline text-lg leading-none">{currentLang.flag}</span>
+        <span className="text-sm font-semibold uppercase tracking-wide">{language}</span>
+        <ChevronDown 
+          size={14} 
+          className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
+        />
       </button>
 
+      {/* 4.2 Menú Desplegable */}
       {isOpen && (
         <>
+          {/* Overlay invisible para cerrar al hacer clic fuera */}
           <div 
-            className="fixed inset-0 z-10" 
+            className="fixed inset-0 z-10 cursor-default" 
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-20">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => {
-                  switchLanguage(lang.code);
-                  setIsOpen(false);
-                }}
-                className={`w-full text-left px-4 py-2 text-sm flex items-center gap-3 hover:bg-blue-50 transition-colors ${
-                  language === lang.code ? 'text-blue-600 font-semibold bg-blue-50' : 'text-gray-700'
-                }`}
-              >
-                <span className="text-lg">{lang.flag}</span>
-                {lang.label}
-              </button>
-            ))}
+
+          {/* Lista de Idiomas */}
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-20 animate-in fade-in slide-in-from-top-2 duration-200 origin-top-right">
+            <div className="px-4 py-2 border-b border-gray-50 mb-1">
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Selecciona idioma</span>
+            </div>
+            
+            {LANGUAGES.map((lang) => {
+              const isActive = language === lang.code;
+              
+              return (
+                <button
+                  key={lang.code}
+                  onClick={() => handleSelect(lang.code)}
+                  className={`w-full text-left px-4 py-2.5 text-sm flex items-center justify-between group transition-colors hover:bg-gray-50`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl shadow-sm rounded-sm overflow-hidden">{lang.flag}</span>
+                    <span className={`font-medium ${isActive ? 'text-blue-600' : 'text-gray-700 group-hover:text-gray-900'}`}>
+                      {lang.label}
+                    </span>
+                  </div>
+                  
+                  {isActive && <Check size={16} className="text-blue-600" />}
+                </button>
+              );
+            })}
           </div>
         </>
       )}

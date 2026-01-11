@@ -1,27 +1,38 @@
+/* ========================================================================
+ * SECCIÓN 1: IMPORTACIONES
+ * ======================================================================== */
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
-// 1. Importar el hook
 import { useLanguage } from '../../context/LanguageContext';
 
+/* ========================================================================
+ * SECCIÓN 2: LÓGICA DEL COMPONENTE
+ * ======================================================================== */
 export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
-  // 2. Activar traducción
+  // 2.1 Hooks y Estados
   const { t } = useLanguage();
-  
   const [email, setEmail] = useState('');
 
+  // 2.2 Control de Visibilidad (Early Return)
   if (!isOpen) return null;
 
+  // 2.3 Manejadores de Eventos (Handlers)
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 3. CAMBIO: Mensaje Toast dinámico con traducción
+    // Simulación de envío
     showToast(`${t('recover.toast_success')} ${email}`, 'success');
     setEmail('');
     onClose();
   };
 
+/* ========================================================================
+ * SECCIÓN 3: RENDERIZADO (JSX)
+ * ======================================================================== */
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 transform scale-100 transition-all">
+        
+        {/* Cabecera del Modal (Icono y Título) */}
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
             <Lock size={32} />
@@ -34,6 +45,7 @@ export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
           </p>
         </div>
         
+        {/* Formulario */}
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label className="block text-xs font-medium text-gray-500 mb-1">
@@ -52,6 +64,7 @@ export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
             </div>
           </div>
           
+          {/* Botones de Acción */}
           <div className="flex space-x-3">
             <button 
                 type="button" 
@@ -68,6 +81,7 @@ export const ForgotPasswordModal = ({ isOpen, onClose, showToast }) => {
             </button>
           </div>
         </form>
+
       </div>
     </div>
   );

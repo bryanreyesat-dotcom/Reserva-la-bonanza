@@ -1,4 +1,7 @@
 export const translations = {
+  /* ========================================================================
+   * 1. ESPAÑOL (ES)
+   * ======================================================================== */
   es: {
     navbar: {
       home: "Inicio",
@@ -25,8 +28,9 @@ export const translations = {
       register_demo: "Registrar Demo"
     },
     hero: {
-      title: "Encuentra  tu hogar ideal donde tu lo sueñes",
-      subtitle: "Descubre propiedades exclusivas a nivel nacional e internacional. El lugar perfecto para vivir o invertir te está esperando",
+      title: "Encuentra tu hogar ideal donde tú lo sueñes",
+      subtitle: "Descubre propiedades exclusivas a nivel nacional e internacional. El lugar perfecto para vivir o invertir te está esperando.",
+      cta: "Ver Cabañas",
       search_dest: "Destino",
       search_dates: "Fechas",
       search_dates_ph: "Seleccionar fechas",
@@ -37,10 +41,10 @@ export const translations = {
     properties: {
       featured: "Propiedades Destacadas",
       all: "Todas las Propiedades",
-        section_title: "Alojamientos Destacados",
-        section_subtitle: "Selección exclusiva, administrados directamente para garantizar tu tranquilidad.",
-        btn_view_all: "Ver todas las propiedades",
-        price_night: "Precio por noche"
+      section_title: "Alojamientos Destacados",
+      section_subtitle: "Selección exclusiva, administrados directamente para garantizar tu tranquilidad.",
+      btn_view_all: "Ver todas las propiedades",
+      price_night: "Precio por noche"
     },
     common: {
       loading: "Cargando...",
@@ -49,84 +53,77 @@ export const translations = {
       price_night: "/ noche"
     },
     catalog: {
-  title: "Catálogo Completo",
-  subtitle: "Explora nuestras 5 opciones exclusivas en Santa Marta",
-  back_button: "Volver al Inicio"
-},
-footer: {
-  brand_desc: "Agencia de turismo especializada en cabañas y apartaestudios en Santa Marta. Experiencias únicas frente al mar.",
-  contact_title: "Contacto",
-  chat_support: "Chat Soporte y Reservas",
-  always_open: "Siempre abierto",
-  legal_title: "Legal",
-  about_us: "Sobre Nosotros",
-  terms: "Términos y Condiciones",
-  privacy: "Política de Privacidad",
-  rnt: "RNT (Registro Nacional)",
-  rights: "Todos los derechos reservados."
-},     
-auth: {
-  login_title: "Accede a tu cuenta",
-  email_label: "Email",
-  email_ph: "ejemplo@correo.com",
-  password_label: "Contraseña",
-  password_ph: "••••••••",
-  forgot_pass: "¿Olvidaste tu contraseña?",
-  btn_enter: "Entrar",
-  btn_validating: "Validando reserva...",
-  or_continue: "O continúa con",
-  secure_text: "Acceso seguro para Administración, Hoteles y Clientes",
-  
-  // Tooltips y errores
-  tooltip_show: "Abrir persiana (Ver)",
-  tooltip_hide: "Cerrar persiana (Ocultar)",
-  error_key: "¡Ups! Esa llave no abre esta habitación. Credenciales no válidas. Si olvidaste tu llave, usa el botón de recuperar."
-},
-register: {
-  title: "Crear Cuenta",
-  subtitle: "Selecciona cómo quieres usar la plataforma",
-  role_traveler: "Soy Viajero",
-  role_hotel: "Soy Hotel",
-  
-  // Campos Viajero
-  name: "Nombre",
-  lastname: "Apellido",
-  name_ph: "Tu nombre",
-  lastname_ph: "Tus apellidos",
-  
-  // Campos Hotel
-  company_name: "Nombre del Establecimiento",
-  company_ph: "Ej: Hotel Gran Paraíso",
-  nit: "NIT / RUT (Identificación Tributaria)",
-  nit_ph: "Ej: 900.123.456-7",
-  
-  // Comunes
-  email: "Email",
-  email_corp: "Email Corporativo",
-  email_ph: "correo@ejemplo.com",
-  email_corp_ph: "reservas@tuhotel.com",
-  password: "Contraseña",
-  password_ph: "Crear contraseña",
-  
-  // Términos
-  accept_terms: "Acepto los",
-  terms_link: "Términos y Condiciones",
-  and: "y la",
-  privacy_link: "Política de Privacidad",
-  of_brand: "de ReservaLaBonanza.",
-  
-  btn_register: "Registrarse"
-},
-recover: {
-  title: "Recuperar Contraseña",
-  desc: "Ingresa tu correo y te enviaremos las instrucciones.",
-  label_email: "Email Registrado",
-  placeholder: "ejemplo@correo.com",
-  btn_cancel: "Cancelar",
-  btn_send: "Enviar",
-  toast_success: "Hemos enviado un enlace de recuperación a"
-},
+      title: "Catálogo Completo",
+      subtitle: "Explora nuestras 5 opciones exclusivas en Santa Marta",
+      back_button: "Volver al Inicio"
+    },
+    footer: {
+      brand_desc: "Agencia de turismo especializada en cabañas y apartaestudios en Santa Marta. Experiencias únicas frente al mar.",
+      contact_title: "Contacto",
+      chat_support: "Chat Soporte y Reservas",
+      always_open: "Siempre abierto",
+      legal_title: "Legal",
+      about_us: "Sobre Nosotros",
+      terms: "Términos y Condiciones",
+      privacy: "Política de Privacidad",
+      rnt: "RNT (Registro Nacional)",
+      rights: "Todos los derechos reservados."
+    },
+    auth: {
+      login_title: "Accede a tu cuenta",
+      email_label: "Email",
+      email_ph: "ejemplo@correo.com",
+      password_label: "Contraseña",
+      password_ph: "••••••••",
+      forgot_pass: "¿Olvidaste tu contraseña?",
+      btn_enter: "Entrar",
+      btn_validating: "Validando reserva...",
+      or_continue: "O continúa con",
+      secure_text: "Acceso seguro para Administración, Hoteles y Clientes",
+      tooltip_show: "Abrir persiana (Ver)",
+      tooltip_hide: "Cerrar persiana (Ocultar)",
+      error_key: "¡Ups! Esa llave no abre esta habitación. Credenciales no válidas. Si olvidaste tu llave, usa el botón de recuperar."
+    },
+    register: {
+      title: "Crear Cuenta",
+      subtitle: "Selecciona cómo quieres usar la plataforma",
+      role_traveler: "Soy Viajero",
+      role_hotel: "Soy Hotel",
+      name: "Nombre",
+      lastname: "Apellido",
+      name_ph: "Tu nombre",
+      lastname_ph: "Tus apellidos",
+      company_name: "Nombre del Establecimiento",
+      company_ph: "Ej: Hotel Gran Paraíso",
+      nit: "NIT / RUT (Identificación Tributaria)",
+      nit_ph: "Ej: 900.123.456-7",
+      email: "Email",
+      email_corp: "Email Corporativo",
+      email_ph: "correo@ejemplo.com",
+      email_corp_ph: "reservas@tuhotel.com",
+      password: "Contraseña",
+      password_ph: "Crear contraseña",
+      accept_terms: "Acepto los",
+      terms_link: "Términos y Condiciones",
+      and: "y la",
+      privacy_link: "Política de Privacidad",
+      of_brand: "de ReservaLaBonanza.",
+      btn_register: "Registrarse"
+    },
+    recover: {
+      title: "Recuperar Contraseña",
+      desc: "Ingresa tu correo y te enviaremos las instrucciones.",
+      label_email: "Email Registrado",
+      placeholder: "ejemplo@correo.com",
+      btn_cancel: "Cancelar",
+      btn_send: "Enviar",
+      toast_success: "Hemos enviado un enlace de recuperación a"
+    }
   },
+
+  /* ========================================================================
+   * 2. ENGLISH (EN)
+   * ======================================================================== */
   en: {
     navbar: {
       home: "Home",
@@ -152,17 +149,17 @@ recover: {
       enter: "Sign In",
       register_demo: "Register Demo"
     },
-   hero: {
-    title: "Find your ideal home wherever you dream of it",
-    subtitle: "Discover exclusive properties nationally and internationally. The perfect place to live or invest is waiting for you.",
-    cta: "View Cabins",
-    search_dest: "Destination",
-    search_dates: "Dates",
-    search_dates_ph: "Select dates",
-    search_guests: "Guests",
-    search_guests_ph: "2 Adults",
-    search_btn: "SEARCH"
-  },
+    hero: {
+      title: "Find your ideal home wherever you dream of it",
+      subtitle: "Discover exclusive properties nationally and internationally. The perfect place to live or invest is waiting for you.",
+      cta: "View Cabins",
+      search_dest: "Destination",
+      search_dates: "Dates",
+      search_dates_ph: "Select dates",
+      search_guests: "Guests",
+      search_guests_ph: "2 Adults",
+      search_btn: "SEARCH"
+    },
     properties: {
       featured: "Featured Properties",
       all: "All Properties",
@@ -178,80 +175,77 @@ recover: {
       price_night: "/ night"
     },
     catalog: {
-  title: "Full Catalog",
-  subtitle: "Explore our 5 exclusive options in Santa Marta",
-  back_button: "Back to Home"
-},
-footer: {
-  brand_desc: "Tourism agency specializing in cabins and studio apartments in Santa Marta. Unique experiences facing the sea.",
-  contact_title: "Contact",
-  chat_support: "Support Chat & Reservations",
-  always_open: "Always open",
-  legal_title: "Legal",
-  about_us: "About Us",
-  terms: "Terms and Conditions",
-  privacy: "Privacy Policy",
-  rnt: "RNT (National Registry)",
-  rights: "All rights reserved."
-},
-auth: {
-  login_title: "Access your account",
-  email_label: "Email",
-  email_ph: "example@mail.com",
-  password_label: "Password",
-  password_ph: "••••••••",
-  forgot_pass: "Forgot your password?",
-  btn_enter: "Sign In",
-  btn_validating: "Validating reservation...",
-  or_continue: "Or continue with",
-  secure_text: "Secure access for Administration, Hotels, and Clients",
-  
-  // Tooltips y errores
-  tooltip_show: "Open blinds (Show)",
-  tooltip_hide: "Close blinds (Hide)",
-  error_key: "Oops! That key doesn't open this room. Invalid credentials. If you forgot your key, use the recover button."
-},
-register: {
-  title: "Create Account",
-  subtitle: "Select how you want to use the platform",
-  role_traveler: "I am a Traveler",
-  role_hotel: "I am a Hotel",
-  
-  name: "First Name",
-  lastname: "Last Name",
-  name_ph: "Your name",
-  lastname_ph: "Your last name",
-  
-  company_name: "Establishment Name",
-  company_ph: "Ex: Grand Paradise Hotel",
-  nit: "Tax ID / NIT",
-  nit_ph: "Ex: 900.123.456-7",
-  
-  email: "Email",
-  email_corp: "Corporate Email",
-  email_ph: "mail@example.com",
-  email_corp_ph: "reservations@yourhotel.com",
-  password: "Password",
-  password_ph: "Create password",
-  
-  accept_terms: "I accept the",
-  terms_link: "Terms and Conditions",
-  and: "and the",
-  privacy_link: "Privacy Policy",
-  of_brand: "of ReservaLaBonanza.",
-  
-  btn_register: "Sign Up"
-},
-recover: {
-  title: "Recover Password",
-  desc: "Enter your email and we will send you instructions.",
-  label_email: "Registered Email",
-  placeholder: "example@mail.com",
-  btn_cancel: "Cancel",
-  btn_send: "Send",
-  toast_success: "We have sent a recovery link to"
-}
+      title: "Full Catalog",
+      subtitle: "Explore our 5 exclusive options in Santa Marta",
+      back_button: "Back to Home"
+    },
+    footer: {
+      brand_desc: "Tourism agency specializing in cabins and studio apartments in Santa Marta. Unique experiences facing the sea.",
+      contact_title: "Contact",
+      chat_support: "Support Chat & Reservations",
+      always_open: "Always open",
+      legal_title: "Legal",
+      about_us: "About Us",
+      terms: "Terms and Conditions",
+      privacy: "Privacy Policy",
+      rnt: "RNT (National Registry)",
+      rights: "All rights reserved."
+    },
+    auth: {
+      login_title: "Access your account",
+      email_label: "Email",
+      email_ph: "example@mail.com",
+      password_label: "Password",
+      password_ph: "••••••••",
+      forgot_pass: "Forgot your password?",
+      btn_enter: "Sign In",
+      btn_validating: "Validating reservation...",
+      or_continue: "Or continue with",
+      secure_text: "Secure access for Administration, Hotels, and Clients",
+      tooltip_show: "Open blinds (Show)",
+      tooltip_hide: "Close blinds (Hide)",
+      error_key: "Oops! That key doesn't open this room. Invalid credentials. If you forgot your key, use the recover button."
+    },
+    register: {
+      title: "Create Account",
+      subtitle: "Select how you want to use the platform",
+      role_traveler: "I am a Traveler",
+      role_hotel: "I am a Hotel",
+      name: "First Name",
+      lastname: "Last Name",
+      name_ph: "Your name",
+      lastname_ph: "Your last name",
+      company_name: "Establishment Name",
+      company_ph: "Ex: Grand Paradise Hotel",
+      nit: "Tax ID / NIT",
+      nit_ph: "Ex: 900.123.456-7",
+      email: "Email",
+      email_corp: "Corporate Email",
+      email_ph: "mail@example.com",
+      email_corp_ph: "reservations@yourhotel.com",
+      password: "Password",
+      password_ph: "Create password",
+      accept_terms: "I accept the",
+      terms_link: "Terms and Conditions",
+      and: "and the",
+      privacy_link: "Privacy Policy",
+      of_brand: "of ReservaLaBonanza.",
+      btn_register: "Sign Up"
+    },
+    recover: {
+      title: "Recover Password",
+      desc: "Enter your email and we will send you instructions.",
+      label_email: "Registered Email",
+      placeholder: "example@mail.com",
+      btn_cancel: "Cancel",
+      btn_send: "Send",
+      toast_success: "We have sent a recovery link to"
+    }
   },
+
+  /* ========================================================================
+   * 3. FRANÇAIS (FR)
+   * ======================================================================== */
   fr: {
     navbar: {
       home: "Accueil",
@@ -278,23 +272,23 @@ recover: {
       register_demo: "Inscrire Démo"
     },
     hero: {
-     title: "Trouvez votre maison idéale là où vous en rêvez",
-     subtitle: "Découvrez des propriétés exclusives au niveau national et international. L'endroit idéal pour vivre ou investir vous attend.",
-     cta: "Voir les Cabanes",
-     search_dest: "Destination",
-     search_dates: "Dates",
-     search_dates_ph: "Sélectionner dates",
-     search_guests: "Voyageurs",
-     search_guests_ph: "2 Adultes",
-     search_btn: "RECHERCHER"
-   },
+      title: "Trouvez votre maison idéale là où vous en rêvez",
+      subtitle: "Découvrez des propriétés exclusives au niveau national et international. L'endroit idéal pour vivre ou investir vous attend.",
+      cta: "Voir les Cabanes",
+      search_dest: "Destination",
+      search_dates: "Dates",
+      search_dates_ph: "Sélectionner dates",
+      search_guests: "Voyageurs",
+      search_guests_ph: "2 Adultes",
+      search_btn: "RECHERCHER"
+    },
     properties: {
       featured: "Propriétés en Vedette",
       all: "Toutes les Propriétés",
-        section_title: "Hébergements en Vedette",
-        section_subtitle: "Sélection exclusive, gérée directement pour garantir votre tranquillité.",
-        btn_view_all: "Voir toutes les propriétés",
-        price_night: "Prix par nuit"
+      section_title: "Hébergements en Vedette",
+      section_subtitle: "Sélection exclusive, gérée directement pour garantir votre tranquillité.",
+      btn_view_all: "Voir toutes les propriétés",
+      price_night: "Prix par nuit"
     },
     common: {
       loading: "Chargement...",
@@ -303,78 +297,71 @@ recover: {
       price_night: "/ nuit"
     },
     catalog: {
-  title: "Catalogue Complet",
-  subtitle: "Explorez nos 5 options exclusives à Santa Marta",
-  back_button: "Retour à l'accueil"
-},
-footer: {
-  brand_desc: "Agence de tourisme spécialisée dans les cabanes et studios à Santa Marta. Des expériences uniques face à la mer.",
-  contact_title: "Contact",
-  chat_support: "Chat Support & Réservations",
-  always_open: "Toujours ouvert",
-  legal_title: "Légal",
-  about_us: "À propos de nous",
-  terms: "Termes et Conditions",
-  privacy: "Politique de Confidentialité",
-  rnt: "RNT (Registre National)",
-  rights: "Tous droits réservés."
-},
-auth: {
-  login_title: "Accédez à votre compte",
-  email_label: "E-mail",
-  email_ph: "exemple@mail.com",
-  password_label: "Mot de passe",
-  password_ph: "••••••••",
-  forgot_pass: "Mot de passe oublié ?",
-  btn_enter: "Entrer",
-  btn_validating: "Validation de la réservation...",
-  or_continue: "Ou continuez avec",
-  secure_text: "Accès sécurisé pour Administration, Hôtels et Clients",
-  
-  // Tooltips y errores
-  tooltip_show: "Ouvrir les stores (Voir)",
-  tooltip_hide: "Fermer les stores (Cacher)",
-  error_key: "Oups! Cette clé n'ouvre pas cette chambre. Identifiants invalides."
-},
-register: {
-  title: "Créer un Compte",
-  subtitle: "Sélectionnez comment vous souhaitez utiliser la plateforme",
-  role_traveler: "Je suis Voyageur",
-  role_hotel: "Je suis Hôtelier",
-  
-  name: "Prénom",
-  lastname: "Nom",
-  name_ph: "Votre prénom",
-  lastname_ph: "Votre nom",
-  
-  company_name: "Nom de l'établissement",
-  company_ph: "Ex: Hôtel Grand Paradis",
-  nit: "Numéro Fiscal / NIT",
-  nit_ph: "Ex: 900.123.456-7",
-  
-  email: "E-mail",
-  email_corp: "E-mail Professionnel",
-  email_ph: "mail@exemple.com",
-  email_corp_ph: "reservations@votrehotel.com",
-  password: "Mot de passe",
-  password_ph: "Créer un mot de passe",
-  
-  accept_terms: "J'accepte les",
-  terms_link: "Termes et Conditions",
-  and: "et la",
-  privacy_link: "Politique de Confidentialité",
-  of_brand: "de ReservaLaBonanza.",
-  
-  btn_register: "S'inscrire"
-},
-recover: {
-  title: "Récupérer le mot de passe",
-  desc: "Entrez votre e-mail et nous vous enverrons les instructions.",
-  label_email: "E-mail enregistré",
-  placeholder: "exemple@mail.com",
-  btn_cancel: "Annuler",
-  btn_send: "Envoyer",
-  toast_success: "Nous avons envoyé un lien de récupération à"
-}
+      title: "Catalogue Complet",
+      subtitle: "Explorez nos 5 options exclusives à Santa Marta",
+      back_button: "Retour à l'accueil"
+    },
+    footer: {
+      brand_desc: "Agence de tourisme spécialisée dans les cabanes et studios à Santa Marta. Des expériences uniques face à la mer.",
+      contact_title: "Contact",
+      chat_support: "Chat Support & Réservations",
+      always_open: "Toujours ouvert",
+      legal_title: "Légal",
+      about_us: "À propos de nous",
+      terms: "Termes et Conditions",
+      privacy: "Politique de Confidentialité",
+      rnt: "RNT (Registre National)",
+      rights: "Tous droits réservés."
+    },
+    auth: {
+      login_title: "Accédez à votre compte",
+      email_label: "E-mail",
+      email_ph: "exemple@mail.com",
+      password_label: "Mot de passe",
+      password_ph: "••••••••",
+      forgot_pass: "Mot de passe oublié ?",
+      btn_enter: "Entrer",
+      btn_validating: "Validation de la réservation...",
+      or_continue: "Ou continuez avec",
+      secure_text: "Accès sécurisé pour Administration, Hôtels et Clients",
+      tooltip_show: "Ouvrir les stores (Voir)",
+      tooltip_hide: "Fermer les stores (Cacher)",
+      error_key: "Oups! Cette clé n'ouvre pas cette chambre. Identifiants invalides."
+    },
+    register: {
+      title: "Créer un Compte",
+      subtitle: "Sélectionnez comment vous souhaitez utiliser la plateforme",
+      role_traveler: "Je suis Voyageur",
+      role_hotel: "Je suis Hôtelier",
+      name: "Prénom",
+      lastname: "Nom",
+      name_ph: "Votre prénom",
+      lastname_ph: "Votre nom",
+      company_name: "Nom de l'établissement",
+      company_ph: "Ex: Hôtel Grand Paradis",
+      nit: "Numéro Fiscal / NIT",
+      nit_ph: "Ex: 900.123.456-7",
+      email: "E-mail",
+      email_corp: "E-mail Professionnel",
+      email_ph: "mail@exemple.com",
+      email_corp_ph: "reservations@votrehotel.com",
+      password: "Mot de passe",
+      password_ph: "Créer un mot de passe",
+      accept_terms: "J'accepte les",
+      terms_link: "Termes et Conditions",
+      and: "et la",
+      privacy_link: "Politique de Confidentialité",
+      of_brand: "de ReservaLaBonanza.",
+      btn_register: "S'inscrire"
+    },
+    recover: {
+      title: "Récupérer le mot de passe",
+      desc: "Entrez votre e-mail et nous vous enverrons les instructions.",
+      label_email: "E-mail enregistré",
+      placeholder: "exemple@mail.com",
+      btn_cancel: "Annuler",
+      btn_send: "Envoyer",
+      toast_success: "Nous avons envoyé un lien de récupération à"
+    }
   }
 };

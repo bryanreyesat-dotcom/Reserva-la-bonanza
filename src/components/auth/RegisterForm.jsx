@@ -1,26 +1,91 @@
+/* ========================================================================
+ * SECCIÓN 1: IMPORTACIONES
+ * ======================================================================== */
 import React, { useState } from 'react';
 import { Briefcase, Building } from 'lucide-react'; 
-// 1. Importar el hook
 import { useLanguage } from '../../context/LanguageContext';
+import { supabase } from '../../../backend/supabaseClient';
 
-const RegisterForm = ({ onRegisterSuccess }) => {
-  // 2. Activar traducción
+/* ========================================================================
+ * SECCIÓN 2: LÓGICA DEL COMPONENTE
+ * ======================================================================== */
+const RegisterForm = ({ onRegisterSuccess, showToast }) => {
+  
+  // 2.1 Hooks y Estados
   const { t } = useLanguage();
-
-  const [role, setRole] = useState('client');
-  const [formData, setFormData] = useState({ name: '', lastname: '', email: '', password: '', companyName: '', nit: '' });
+  const [role, setRole] = useState('client'); // 'client' | 'hotel'
+  const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    lastname: '', 
+    email: '', 
+    password: '', 
+    companyName: '', 
+    nit: '' 
+  });
 
+  // 2.2 Manejadores (Handlers)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!acceptedTerms) return; 
-    onRegisterSuccess({ ...formData, role });
+    if (!acceptedTerms) return;
+    setLoading(true);
+
+    try {
+        // A. Crear usuario en Supabase Auth (Correo y Contraseña)
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password,
+        });
+
+        if (authError) throw authError;
+
+        if (authData.user) {
+            // B. Preparar datos para la tabla pública 'profiles'
+            const profileData = {
+                id: authData.user.id, // Vinculamos con el ID de Auth
+                role: role,
+                full_name: role === 'client' ? `${formData.name} ${formData.lastname}` : null,
+                company_name: role === 'hotel' ? formData.companyName : null,
+                nit: role === 'hotel' ? formData.nit : null
+            };
+
+            // C. Insertar en la base de datos
+            const { error: profileError } = await supabase
+                .from('profiles')
+                .insert([profileData]);
+
+            if (profileError) throw profileError;
+
+            // D. Éxito
+            if (showToast) showToast('¡Cuenta creada con éxito!', 'success');
+            
+            // Notificar al componente padre
+            onRegisterSuccess({ ...formData, role });
+        }
+
+    } catch (error) {
+        console.error("Error registro:", error.message);
+        const msg = error.message === 'User already registered' ? 'El usuario ya está registrado' : error.message;
+        
+        if (showToast) {
+            showToast(msg, 'error');
+        } else {
+            alert(msg);
+        }
+    } finally {
+        setLoading(false);
+    }
   };
 
+/* ========================================================================
+ * SECCIÓN 3: RENDERIZADO (JSX)
+ * ======================================================================== */
   return (
     <div className="animate-in slide-in-from-right fade-in duration-300">
       <h3 className="text-2xl font-bold text-gray-800 mb-2">
@@ -32,7 +97,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         
-        {/* Selector de Rol */}
+        {/* Selector de Rol (Tabs Visuales) */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <label className={`cursor-pointer relative p-3 border rounded-lg text-center transition-all ${role === 'client' ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-500' : 'hover:bg-gray-50'}`}>
             <input type="radio" name="role" value="client" checked={role === 'client'} onChange={() => setRole('client')} className="sr-only" />
@@ -51,9 +116,9 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           </label>
         </div>
 
-        {/* LÓGICA DE CAMPOS DINÁMICOS */}
+        {/* CAMPOS DINÁMICOS SEGÚN ROL */}
         {role === 'client' ? (
-          // --- FORMULARIO PARA VIAJEROS ---
+          /* --- FORMULARIO PARA VIAJEROS --- */
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1">
@@ -69,7 +134,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
             </div>
           </div>
         ) : (
-          // --- FORMULARIO PARA HOTELES ---
+          /* --- FORMULARIO PARA HOTELES --- */
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
             <div className="md:col-span-2">
               <label className="block text-xs font-medium text-gray-500 mb-1">
@@ -89,6 +154,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           </div>
         )}
 
+        {/* CAMPOS COMUNES (Email y Password) */}
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">
             {role === 'hotel' ? t('register.email_corp') : t('register.email')}
@@ -117,7 +183,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           />
         </div>
 
-        {/* CHECKBOX DE TÉRMINOS TRADUCIDO */}
+        {/* CHECKBOX DE TÉRMINOS */}
         <div className="flex items-start gap-2 pt-2">
             <input 
                 type="checkbox" 
@@ -132,12 +198,13 @@ const RegisterForm = ({ onRegisterSuccess }) => {
             </label>
         </div>
 
+        {/* BOTÓN DE REGISTRO */}
         <button 
           type="submit" 
-          disabled={!acceptedTerms}
-          className={`w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-lg shadow-md transition-all mt-2 ${!acceptedTerms ? 'opacity-50 cursor-not-allowed' : 'transform active:scale-95'}`}
+          disabled={!acceptedTerms || loading}
+          className={`w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-lg shadow-md transition-all mt-2 ${(!acceptedTerms || loading) ? 'opacity-50 cursor-not-allowed' : 'transform active:scale-95'}`}
         >
-          {t('register.btn_register')}
+          {loading ? 'Creando cuenta...' : t('register.btn_register')}
         </button>
       </form>
     </div>

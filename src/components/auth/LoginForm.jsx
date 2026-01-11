@@ -1,55 +1,102 @@
+/* ========================================================================
+ * SECCIÓN 1: IMPORTACIONES
+ * ======================================================================== */
 import React, { useState } from 'react';
-import { Mail, Lock, ArrowRight, Blinds, Square } from 'lucide-react';
-// 1. Importamos el hook
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { supabase } from '../../../backend/supabaseClient'; 
 
-const MOCK_DB = [
-  { email: 'admin@agencia.com', password: '123', role: 'admin', name: 'Dueño Agencia' },
-  { email: 'hotel@paradise.com', password: '123', role: 'hotel', name: 'Hotel Paradise' },
-  { email: 'juan@gmail.com', password: '123', role: 'client', name: 'Juan Viajero' },
-  { email: 'vip@gold.com', password: '123', role: 'client_vip', name: 'Sr. Gold VIP' }
+/* ========================================================================
+ * SECCIÓN 2: CONSTANTES DE ACCESO
+ * ======================================================================== */
+const SOCIOS_EMAILS = [
+  'toncelbryan17@gmail.com',
+  'luboguarnizojoserafa@gmail.com',
+  'labonanzar@gmail.com'
 ];
 
+/* ========================================================================
+ * SECCIÓN 3: LÓGICA DEL COMPONENTE
+ * ======================================================================== */
 const LoginForm = ({ onLoginSuccess, onForgotPassword, showToast }) => {
-  // 2. Activamos la traducción
-  const { t } = useLanguage();
   
+  // 3.1 Hooks y Estados Locales
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // 3.2 Manejadores (Handlers)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-        const user = MOCK_DB.find(u => u.email === formData.email && u.password === formData.password);
-        
-        if (user) {
-            onLoginSuccess(user);
-        } else {
-            // 3. CAMBIO CLAVE: Usamos la traducción para el mensaje de error
-            showToast(t('auth.error_key'), 'error');
-            setIsLoading(false);
+    try {
+        // A. Autenticación con Supabase
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: formData.email,
+            password: formData.password,
+        });
+
+        if (error) throw error;
+
+        if (data.session) {
+            // B. Obtener datos extra del perfil
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', data.session.user.id)
+                .single();
+
+            // C. Verificar privilegios (Socio vs Usuario)
+            const emailUsuario = data.session.user.email.toLowerCase().trim();
+            const esSocio = SOCIOS_EMAILS.includes(emailUsuario);
+
+            // D. Definir Mensaje de Bienvenida
+            let mensaje = "¡Bienvenido!";
+
+            if (esSocio) {
+                mensaje = "🔒 Acceso Concedido: Super Socio";
+            } else if (profile) {
+                if (profile.role === 'hotel') {
+                    mensaje = `🏨 Bienvenido Hotelero: ${profile.company_name || 'Gestor'}`;
+                } else if (profile.role === 'client') {
+                    mensaje = `🎒 ¡Hola Viajero, ${profile.full_name || 'Amigo'}!`;
+                }
+            }
+
+            // E. Finalizar proceso
+            showToast(mensaje, 'success');
+            onLoginSuccess(data.session, esSocio);
         }
-    }, 1500);
+
+    } catch (error) {
+        console.error("Error login:", error.message);
+        showToast(t('auth.error_key') || 'Correo o contraseña incorrectos', 'error');
+    } finally {
+        setIsLoading(false);
+    }
   };
 
+/* ========================================================================
+ * SECCIÓN 4: RENDERIZADO (JSX)
+ * ======================================================================== */
   return (
     <div className="animate-in slide-in-from-left fade-in duration-300">
       <h3 className="text-2xl font-bold text-gray-800 mb-6">
-        {t('auth.login_title')}
+        {t('auth.login_title') || 'Iniciar Sesión'}
       </h3>
       
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Input Email */}
+        
+        {/* Campo: Email */}
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">
-            {t('auth.email_label')}
+            {t('auth.email_label') || 'Correo Electrónico'}
           </label>
           <div className="relative">
             <Mail className="absolute left-3 top-2.5 text-gray-400" size={18} />
@@ -60,15 +107,15 @@ const LoginForm = ({ onLoginSuccess, onForgotPassword, showToast }) => {
               onChange={handleChange}
               required 
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
-              placeholder={t('auth.email_ph')} 
+              placeholder={t('auth.email_ph') || 'ejemplo@correo.com'} 
             />
           </div>
         </div>
         
-        {/* Input Password con PERSIANA */}
+        {/* Campo: Contraseña */}
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">
-            {t('auth.password_label')}
+            {t('auth.password_label') || 'Contraseña'}
           </label>
           <div className="relative">
             <Lock className="absolute left-3 top-2.5 text-gray-400" size={18} />
@@ -79,18 +126,14 @@ const LoginForm = ({ onLoginSuccess, onForgotPassword, showToast }) => {
               onChange={handleChange}
               required 
               className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
-              placeholder={t('auth.password_ph')} 
+              placeholder={t('auth.password_ph') || '******'} 
             />
-            
-            {/* BOTÓN PERSIANA */}
             <button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-2.5 text-gray-400 hover:text-blue-600 focus:outline-none transition-colors"
-                // 4. CAMBIO: Tooltips traducidos
-                title={showPassword ? t('auth.tooltip_hide') : t('auth.tooltip_show')}
             >
-                {showPassword ? <Square size={18} strokeWidth={1.5} /> : <Blinds size={18} strokeWidth={1.5} />}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
           
@@ -100,7 +143,7 @@ const LoginForm = ({ onLoginSuccess, onForgotPassword, showToast }) => {
               onClick={onForgotPassword} 
               className="text-xs text-blue-600 hover:underline hover:text-blue-800 transition-colors"
             >
-              {t('auth.forgot_pass')}
+              {t('auth.forgot_pass') || '¿Olvidaste tu contraseña?'}
             </button>
           </div>
         </div>
@@ -112,39 +155,20 @@ const LoginForm = ({ onLoginSuccess, onForgotPassword, showToast }) => {
           className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition-all transform flex justify-center items-center gap-2 ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-0.5'}`}
         >
           {isLoading ? (
-            <span>{t('auth.btn_validating')}</span>
+            <span>{t('auth.btn_validating') || 'Validando...'}</span>
           ) : (
             <>
-                <span>{t('auth.btn_enter')}</span>
+                <span>{t('auth.btn_enter') || 'Entrar'}</span>
                 <ArrowRight size={16} />
             </>
           )}
         </button>
       </form>
       
-      {/* Social y Footer */}
-      <div className="my-6 flex items-center">
-        <div className="flex-1 border-t border-gray-200"></div>
-        <span className="px-4 text-xs text-gray-400 font-medium">
-            {t('auth.or_continue')}
-        </span>
-        <div className="flex-1 border-t border-gray-200"></div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <button className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm font-medium text-gray-700">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
-            Google
-        </button>
-        <button className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm font-medium text-gray-700">
-            <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" className="w-5 h-5" alt="Facebook" />
-            Facebook
-        </button>
-      </div>
-
+      {/* Footer Seguro */}
       <div className="mt-6 pt-6 border-t border-gray-100 text-center">
         <p className="text-xs text-gray-400">
-            {t('auth.secure_text')}
+            {t('auth.secure_text') || 'Acceso seguro SSL'}
         </p>
       </div>
     </div>

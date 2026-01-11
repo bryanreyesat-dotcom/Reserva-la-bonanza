@@ -1,50 +1,59 @@
+/* ========================================================================
+ * SECCIÓN 1: IMPORTACIONES
+ * ======================================================================== */
 import React from 'react';
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from 'lucide-react';
+import { MapPin, Mail, Clock, Facebook, Instagram, Twitter } from 'lucide-react';
 import { BRAND } from '../config/brand';
-// Importamos el hook de idioma
 import { useLanguage } from '../context/LanguageContext';
 
+/* ========================================================================
+ * SECCIÓN 2: DATOS Y CONFIGURACIÓN
+ * ======================================================================== */
+// Enlaces de Redes Sociales (Fácil de editar)
+const SOCIAL_LINKS = [
+    { id: 'fb', icon: <Facebook size={18}/>, link: "https://www.facebook.com/reservas2021" },
+    { id: 'ig', icon: <Instagram size={18}/>, link: "https://www.instagram.com/ReservaBonanza" },
+    { id: 'tw', icon: <Twitter size={18}/>, link: "https://twitter.com/ReservaBonanza" }
+];
+
+/* ========================================================================
+ * SECCIÓN 3: COMPONENTE PRINCIPAL
+ * ======================================================================== */
 export default function Footer() {
-  // Activamos la traducción
+  // 3.1 Hooks
   const { t } = useLanguage();
 
+  // 3.2 Lógica de WhatsApp
   const whatsappNumber = BRAND.info.phone.replace(/[^0-9]/g, '');
-  // Nota: El mensaje predeterminado de WhatsApp lo dejamos en español porque es probable que quien atienda hable español,
-  // pero podrías hacerlo dinámico si tienes agentes bilingües.
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hola,%20me%20gustaría%20más%20información%20sobre%20sus%20servicios.`;
   
+/* ========================================================================
+ * SECCIÓN 4: RENDERIZADO (JSX)
+ * ======================================================================== */
   return (
     <footer className="bg-gray-900 text-white pt-16 pb-8 border-t border-gray-800 mt-auto">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         
-        {/* COLUMNA 1: MARCA */}
+        {/* COLUMNA 1: MARCA Y REDES */}
         <div className="col-span-1 md:col-span-1">
           <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-             <div className={`w-8 h-8 ${BRAND.colors.bgPrimary} rounded-md flex items-center justify-center text-sm`}>RB</div>
-             {BRAND.name}
+              <div className={`w-8 h-8 ${BRAND.colors.bgPrimary} rounded-md flex items-center justify-center text-sm text-white`}>
+                RB
+              </div>
+              {BRAND.name}
           </h3>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">
-             {/* Descripción traducida */}
-             {t('footer.brand_desc')}
+              {t('footer.brand_desc')}
           </p>
 
           <div className="flex gap-4">
-            <SocialButton 
-               icon={<Facebook size={18}/>} 
-               link="https://www.facebook.com/reservas2021" 
-            />
-            <SocialButton 
-               icon={<Instagram size={18}/>} 
-               link="https://www.instagram.com/ReservaBonanza" 
-            />
-            <SocialButton 
-               icon={<Twitter size={18}/>} 
-               link="https://twitter.com/ReservaBonanza" 
-            />
+            {SOCIAL_LINKS.map((social) => (
+                <SocialButton key={social.id} icon={social.icon} link={social.link} />
+            ))}
           </div>
         </div>
 
-        {/* COLUMNA 2: CONTACTO REAL */}
+        {/* COLUMNA 2: CONTACTO */}
         <div>
           <h4 className="font-bold mb-6 text-gray-200">
             {t('footer.contact_title')}
@@ -54,6 +63,8 @@ export default function Footer() {
                <MapPin size={18} className={`mr-3 mt-0.5 ${BRAND.colors.primary}`} />
                <span className="max-w-[200px]">{BRAND.info.address}</span>
             </li>
+            
+            {/* Link a WhatsApp */}
             <li className="flex items-center">
                <a 
                  href={whatsappLink}
@@ -68,6 +79,7 @@ export default function Footer() {
                  </span>
                </a>
             </li>
+
             <li className="flex items-center">
                <Mail size={18} className={`mr-3 ${BRAND.colors.primary}`} />
                <span>{BRAND.info.email}</span>
@@ -85,38 +97,44 @@ export default function Footer() {
              {t('footer.legal_title')}
            </h4>
            <ul className="space-y-3 text-gray-400 text-sm">
-              <li className="hover:text-white cursor-pointer transition-colors">{t('footer.about_us')}</li>
-              <li className="hover:text-white cursor-pointer transition-colors">{t('footer.terms')}</li>
-              <li className="hover:text-white cursor-pointer transition-colors">{t('footer.privacy')}</li>
-              <li className="hover:text-white cursor-pointer transition-colors">{t('footer.rnt')}</li>
+              {['about_us', 'terms', 'privacy', 'rnt'].map((key) => (
+                  <li key={key} className="hover:text-white cursor-pointer transition-colors">
+                      {t(`footer.${key}`)}
+                  </li>
+              ))}
            </ul>
         </div>
       </div>
       
+      {/* BARRA INFERIOR (Copyright) */}
       <div className="max-w-7xl mx-auto px-4 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
          <p>© 2025 {BRAND.name} S.A.S. {t('footer.rights')}</p>
          <div className="flex gap-4 mt-4 md:mt-0">
-            <span>Santa Marta, Colombia 🌴</span>
+           <span>Santa Marta, Colombia 🌴</span>
          </div>
       </div>
     </footer>
   );
 }
 
-// 👇 COMPONENTES AUXILIARES (Sin cambios, solo se mantienen al final)
+/* ========================================================================
+ * SECCIÓN 5: COMPONENTES AUXILIARES
+ * ======================================================================== */
+
 function SocialButton({ icon, link }) {
     return (
         <a 
             href={link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#0E7C7B] hover:text-white cursor-pointer transition-all duration-300"
+            className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#0E7C7B] hover:text-white cursor-pointer transition-all duration-300 transform hover:-translate-y-1"
         >
             {icon}
         </a>
-    )
+    );
 }
 
+// Icono SVG personalizado de WhatsApp
 function WhatsAppIcon({ className }) {
     return (
         <svg 
@@ -127,5 +145,5 @@ function WhatsAppIcon({ className }) {
         >
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
-    )
+    );
 }
