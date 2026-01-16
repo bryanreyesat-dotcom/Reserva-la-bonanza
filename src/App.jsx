@@ -15,7 +15,6 @@ import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
-import FeaturedProperties from './components/FeacturedProperties';
 import GridAlojamientos from './components/GridAlojamientos';
 
 // Componentes Privados (App Interna)
@@ -224,18 +223,34 @@ function App() {
   }
 
   // VISTA C: PÁGINA PÚBLICA (Sin loguear)
-  return (
+return (
     <LanguageProvider>
       <Router>
         <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-800">
-          <Navbar user={session?.user} onLogout={handleLogout} />
+          <Navbar user={user} onLogout={handleLogout} />
+          
           <div className="flex-grow flex flex-col">
             <Routes>
-              <Route path="/" element={<><HeroSection /><FeaturedProperties /></>} />
+              
+              {/* 1. RUTA INICIO (HOME) */}
+              {/* Aquí ponemos el Hero + el Grid limitado a 3 hoteles */}
+              <Route path="/" element={
+                <>
+                  <HeroSection />
+                  <GridAlojamientos limit={3} />
+                </>
+              } />
+
+              {/* 2. RUTA PROPIEDADES (TODAS) */}
+              {/* Aquí ponemos el Grid SIN límite para que muestre todo */}
               <Route path="/propiedades" element={<GridAlojamientos />} />
+
+              {/* 3. RUTA LOGIN */}
               <Route path="/login" element={<LoginPage onLogin={actualizarEstado} />} />
+
             </Routes>
           </div>
+
           <Footer />
         </div>
       </Router>
