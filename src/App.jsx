@@ -16,7 +16,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
 import FeaturedProperties from './components/FeacturedProperties';
-import AllProperties from './components/AllProperties';
+import GridAlojamientos from './components/GridAlojamientos';
 
 // Componentes Privados (App Interna)
 import Dashboard from './components/Dashboard';
@@ -232,7 +232,7 @@ function App() {
           <div className="flex-grow flex flex-col">
             <Routes>
               <Route path="/" element={<><HeroSection /><FeaturedProperties /></>} />
-              <Route path="/propiedades" element={<AllProperties />} />
+              <Route path="/propiedades" element={<GridAlojamientos />} />
               <Route path="/login" element={<LoginPage onLogin={actualizarEstado} />} />
             </Routes>
           </div>
