@@ -1,6 +1,7 @@
 {
   "name": "backend-reservas",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend Inmobiliaria",
   "main": "index.js",
   "scripts": {

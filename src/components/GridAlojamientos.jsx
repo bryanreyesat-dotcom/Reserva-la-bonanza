@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../backend/supabaseClient';
 import PropertyCard from './PropertyCard';
-import { Link } from 'react-router-dom';
-// 1. IMPORTAMOS LA FLECHA
+// NUEVO: Agregamos useSearchParams aquí
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 const GridAlojamientos = ({ limit }) => {
@@ -10,12 +10,17 @@ const GridAlojamientos = ({ limit }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // NUEVO: Leemos el parámetro de búsqueda de la URL
+  const [searchParams] = useSearchParams();
+  const busqueda = searchParams.get('busqueda'); // Ej: "Rodadero"
+
   useEffect(() => {
     const fetchAlojamientos = async () => {
       try {
         setLoading(true);
         let query = supabase.from('alojamientos').select('*');
 
+        // Si hay límite (Home), aplicamos limit y no filtramos por búsqueda
         if (limit) {
           query = query.limit(limit);
         }
@@ -23,7 +28,22 @@ const GridAlojamientos = ({ limit }) => {
         const { data, error } = await query;
 
         if (error) throw error;
-        setAlojamientos(data);
+
+        // === ZONA DE FILTRADO (NUEVO) ===
+        // Si no estamos en el Home (sin límite) y hay una búsqueda, filtramos manualmente
+        let resultados = data;
+
+        if (!limit && busqueda) {
+          console.log("Filtrando por:", busqueda); // Para ver en consola
+          resultados = data.filter((item) => {
+            const ubicacion = (item.ubicacion || "").toLowerCase();
+            const filtro = busqueda.toLowerCase();
+            return ubicacion.includes(filtro);
+          });
+        }
+        // ================================
+
+        setAlojamientos(resultados);
       } catch (error) {
         console.error("Error cargando alojamientos:", error.message);
         setError(error.message);
@@ -33,28 +53,30 @@ const GridAlojamientos = ({ limit }) => {
     };
 
     fetchAlojamientos();
-  }, [limit]);
+  }, [limit, busqueda]); // NUEVO: Agregamos 'busqueda' para que se recargue si cambia
 
   if (loading) return <div className="text-center py-20">Cargando...</div>;
   if (error) return null;
 
+  // Lógica para el título dinámico
+  const titulo = busqueda && !limit 
+    ? `Resultados para "${busqueda}"` 
+    : (limit ? "Destacados" : "Todos nuestros Alojamientos");
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       
-      {/* 2. BOTÓN DE VOLVER (Solo se muestra si NO hay límite, o sea, en /propiedades) */}
+      {/* 2. BOTÓN DE VOLVER */}
       {!limit && (
-        <div className="mb-8"> {/* Un poco más de margen abajo */}
+        <div className="mb-8">
           <Link 
             to="/" 
-            // Usamos 'group' para que el hover del contenedor afecte al icono y al texto
             className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white border-2 border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 hover:bg-blue-50/50 transition-all duration-300 ease-in-out cursor-pointer"
           >
-            {/* El icono se mueve a la izquierda (-translate-x-1) y cambia de color */}
             <ArrowLeft 
               size={20} 
               className="text-gray-400 group-hover:text-blue-600 transition-transform duration-300 group-hover:-translate-x-1" 
             />
-            {/* El texto se vuelve un poco más oscuro y azul */}
             <span className="font-bold text-sm text-gray-600 group-hover:text-blue-800 transition-colors uppercase tracking-wider">
               Volver al Inicio
             </span>
@@ -62,22 +84,29 @@ const GridAlojamientos = ({ limit }) => {
         </div>
       )}
 
-      {/* Título */}
+      {/* Título (Le puse la variable 'titulo' para que cambie si buscas algo) */}
       <h2 className="text-3xl font-bold mb-8 text-gray-800">
-        {limit ? "Destacados" : "Todos nuestros Alojamientos"}
+        {titulo}
       </h2>
       
       {/* Grid de Tarjetas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        {alojamientos.map((hotel) => (
-          <PropertyCard 
-            key={hotel.id} 
-            data={hotel} 
-          />
-        ))}
-      </div>
+      {/* NUEVO: Un mensajito por si no encuentra nada */}
+      {alojamientos.length === 0 && !loading ? (
+        <div className="text-center py-10 text-gray-500 text-lg">
+           No encontramos alojamientos en "{busqueda}" 😢
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {alojamientos.map((hotel) => (
+            <PropertyCard 
+              key={hotel.id} 
+              data={hotel} 
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Botón "Ver más" (Solo se muestra si HAY límite, o sea, en el Home) */}
+      {/* Botón "Ver más" */}
       {limit && (
         <div className="text-center">
           <Link 

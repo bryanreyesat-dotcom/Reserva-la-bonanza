@@ -53,22 +53,30 @@ const SearchEngine = () => {
       return { ...prev, [type]: newVal };
     });
   };
-
+  
   const handleSearch = (e) => {
     if(e) e.preventDefault();
     
-    // Aquí construimos el objeto de filtros limpio
-    const filtros = {
-      ubicacion: location, // Ejemplo: "Rodadero"
-      fechaInicio: startDate,
-      fechaFin: endDate,
-      adultos: guests.adults,
-      ninos: guests.children
-    };
+    // Creamos una herramienta para construir la URL
+    const params = new URLSearchParams();
 
-    console.log("Enviando filtros:", filtros);
-    // Navegamos pasando el estado (state) para que la otra página lo lea
-    navigate('/propiedades', { state: filtros });
+    // 1. UBICACIÓN: Si el usuario eligió algo que no sea "Todo"
+    // Esto conectará con el filtro que hicimos en AllProperties
+    if (location && location !== "Santa Marta") {
+      params.append('busqueda', location);
+    }
+
+    // 2. FECHAS (Las enviamos por si quieres usarlas en el futuro)
+    if (startDate) params.append('checkin', startDate.toISOString());
+    if (endDate) params.append('checkout', endDate.toISOString());
+
+    // 3. HUÉSPEDES
+    params.append('adultos', guests.adults);
+    params.append('ninos', guests.children);
+
+    // Navegamos pasando los datos en la URL
+    // Ejemplo resultante: /propiedades?busqueda=Rodadero&adultos=2
+    navigate(`/propiedades?${params.toString()}`);
   };
 
   return (
