@@ -78,23 +78,25 @@ const PropertyDetail = () => {
         <ArrowLeft size={20} className="mr-2" /> 
         {t('details.back')}
       </Link>
-
-      {/* Galería Mosaico */}
-      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-3 h-[400px] md:h-[500px] mb-10 rounded-3xl overflow-hidden shadow-xl">
-        {/* Foto Principal (Grande) */}
-        <div className="md:col-span-2 md:row-span-2 relative group cursor-pointer h-full">
+      
+      
+      {/* --- GALERÍA RESPONSIVE (MÓVIL Y PC) --- */}
+      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-2 md:gap-3 h-auto md:h-[500px] mb-10 rounded-3xl overflow-hidden shadow-xl">
+        
+        {/* Foto Principal: En Móvil es grande (col-span-2) y tiene altura fija (300px) */}
+        <div className="col-span-2 md:col-span-2 md:row-span-2 relative group cursor-pointer h-[300px] md:h-full">
            <img 
              src={displayImages[0]} 
              alt="Principal" 
-             onError={(e) => e.target.src = fallbackImage} // Si la URL está rota, pone la gris
+             onError={(e) => e.target.src = fallbackImage} 
              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
            />
            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all"></div>
         </div>
         
-        {/* Fotos Secundarias (Pequeñas) */}
+        {/* Fotos Secundarias: Se muestran siempre. En móvil miden 150px de alto. */}
         {displayImages.slice(1, 5).map((img, index) => (
-            <div key={index} className="hidden md:block relative overflow-hidden h-full">
+            <div key={index} className="relative overflow-hidden h-[150px] md:h-full">
                 <img 
                     src={img} 
                     alt={`Vista ${index + 2}`}
