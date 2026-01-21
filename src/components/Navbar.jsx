@@ -3,7 +3,7 @@
  * ======================================================================== */
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, LogOut, User } from 'lucide-react';
+import { Menu, X, LogOut, User, Globe } from 'lucide-react'; // Agregué Globe para decorar
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 
@@ -50,22 +50,22 @@ const Navbar = ({ user, onLogout }) => {
             {/* A. LOGO DE LA MARCA */}
             <Link 
               to="/" 
-              className="flex-shrink-0 flex items-center gap-3 cursor-pointer group" 
+              className="flex-shrink-0 flex items-center gap-2 cursor-pointer group overflow-hidden" 
               onClick={() => { window.scrollTo(0,0); closeMobileMenu(); }}
             >
-              <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg overflow-hidden group-hover:scale-105 transition-transform duration-300">
+              <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg flex-shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300">
                   <img 
                     src={logo} 
                     alt="RB Logo" 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      // Fallback visual si la imagen falla
                       e.target.style.display='none'; 
                       e.target.parentElement.innerHTML='<span class="font-bold text-sm">RB</span>';
                     }} 
                   />
               </div>
-              <span className="font-bold text-xl text-gray-800 tracking-tight leading-none">
+              {/* Ajusté el texto para que se adapte mejor en móviles muy pequeños */}
+              <span className="font-bold text-lg sm:text-xl text-gray-800 tracking-tight leading-none truncate">
                 Reserva<span className="text-indigo-600"> la<span className="text-indigo-600">&nbsp;Bonanza</span></span>
               </span>
             </Link>
@@ -121,17 +121,13 @@ const Navbar = ({ user, onLogout }) => {
             </div>
 
             {/* C. BOTÓN HAMBURGUESA (Mobile) */}
-            <div className="md:hidden flex items-center gap-4">
-              {/* Selector de idioma visible también en móvil fuera del menú para acceso rápido */}
-               <div className="scale-90 origin-right">
-                  <LanguageSelector />
-               </div>
-
+            {/* AQUI ESTABA EL ERROR: Eliminé el LanguageSelector de aquí */}
+            <div className="md:hidden flex items-center">
               <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="text-gray-600 hover:text-indigo-600 focus:outline-none p-2 rounded-md hover:bg-gray-100 transition-colors"
               >
-                {isMobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+                {isMobileMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
               </button>
             </div>
           </div>
@@ -142,6 +138,15 @@ const Navbar = ({ user, onLogout }) => {
           <div className="md:hidden bg-white border-t border-gray-100 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto absolute w-full animate-in slide-in-from-top-5 duration-200">
             <div className="px-4 py-4 space-y-2 flex flex-col">
               
+              {/* NUEVO: Selector de Idioma DENTRO del menú móvil */}
+              <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-xl mb-2">
+                 <div className="flex items-center gap-2 text-gray-600 font-medium">
+                    <Globe size={18} />
+                    <span>Idioma / Language</span>
+                 </div>
+                 <LanguageSelector />
+              </div>
+
               {NAV_ITEMS.map((item) => (
                 <Link 
                   key={item.path}
