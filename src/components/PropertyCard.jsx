@@ -1,58 +1,73 @@
 import React from 'react';
 import { MapPin, Star, ArrowRight, Heart } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
-const PropertyCard = ({ data, onClick }) => {
-  
-  // 1. LOS HOOKS SIEMPRE VAN PRIMERO (Antes de cualquier if/return)
+const PropertyCard = ({ data }) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
-  // 2. AHORA SÍ, LA PROTECCIÓN DE SEGURIDAD
-  // Si 'data' no existe, retornamos null. 
-  // Pero el hook de arriba ya se ejecutó, así que React está feliz.
-  if (!data) {
-    return null;
-  }
+  if (!data) return null;
 
-  // 3. Desestructurar los datos
   const { 
+    id, 
     titulo, 
     tipo, 
     ubicacion, 
     precio_noche, 
     calificacion, 
-    imagen_url 
+    imagen_url, // Columna vieja (foto única)
+    galeria     // Columna nueva (lista de fotos)
   } = data;
 
-  // 4. Formatear precio
+  // --- SOLUCIÓN DEL PROBLEMA DE LA FOTO ---
+  // 1. ¿Existe 'galeria' y tiene fotos? -> Usa la primera foto [0]
+  // 2. ¿No hay galería? -> Usa 'imagen_url'
+  // 3. ¿No hay nada? -> Usa una imagen gris de emergencia.
+  let displayImage = "https://via.placeholder.com/400x300?text=No+Image"; // Imagen de respaldo por si todo falla
+
+  if (galeria && Array.isArray(galeria) && galeria.length > 0) {
+    // Si hay galería, tomamos la PRIMERA foto para la portada
+    displayImage = galeria[0];
+  } else if (imagen_url) {
+    // Si no hay galería, usamos la columna antigua
+    displayImage = imagen_url;
+  }
+
+  // Formato de precio
   const precioFormateado = new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: 'COP',
     maximumFractionDigits: 0
   }).format(precio_noche);
 
-  // 5. Manejador de favoritos
+  const handleCardClick = () => {
+    navigate(`/propiedad/${id}`);
+  };
+
   const handleFavoriteClick = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     console.log("Añadido a favoritos:", titulo);
   };
 
   return (
     <div 
-      onClick={onClick}
+      onClick={handleCardClick}
       className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 cursor-pointer border border-gray-100 flex flex-col h-full"
     >
-      {/* --- IMAGEN --- */}
-      <div className="relative h-72 overflow-hidden">
+      {/* --- IMAGEN DE PORTADA --- */}
+      <div className="relative h-72 overflow-hidden bg-gray-200">
         <img 
-          src={imagen_url} 
+          src={displayImage} 
           alt={titulo} 
+          // Si el link sigue roto por alguna razón, ponemos la imagen gris automáticamente
+          onError={(e) => e.target.src = "https://via.placeholder.com/400x300?text=Error+Loading"}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-300"></div>
         
         <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-gray-800 uppercase tracking-wider shadow-sm border border-white/50">
-          {tipo}
+          {tipo || 'Alojamiento'}
         </div>
         
         <button 
@@ -71,7 +86,7 @@ const PropertyCard = ({ data, onClick }) => {
           </h3>
           <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg border border-yellow-100 shadow-sm flex-shrink-0">
             <Star size={14} className="text-yellow-500 fill-yellow-500" />
-            <span className="text-xs font-bold text-gray-800">{calificacion}</span>
+            <span className="text-xs font-bold text-gray-800">{calificacion || 'New'}</span>
           </div>
         </div>
 

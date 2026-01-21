@@ -16,6 +16,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
 import GridAlojamientos from './components/GridAlojamientos';
+import PropertyDetail from './components/PropertyDetail';
 
 // Componentes Privados (App Interna)
 import Dashboard from './components/Dashboard';
@@ -240,6 +241,8 @@ return (
                   <GridAlojamientos limit={3} />
                 </>
               } />
+
+              <Route path="/propiedad/:id" element={<PropertyDetail />} />
 
               {/* 2. RUTA PROPIEDADES (TODAS) */}
               {/* Aquí ponemos el Grid SIN límite para que muestre todo */}

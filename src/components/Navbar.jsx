@@ -8,7 +8,7 @@ import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 
 // Activos
-import logo from '../assets/logo-bonanza.jpg';
+import logo from '../assets/logo-bonanza.jpeg';
 
 /* ========================================================================
  * SECCIÓN 2: CONFIGURACIÓN

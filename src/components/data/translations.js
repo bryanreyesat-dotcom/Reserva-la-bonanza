@@ -32,10 +32,12 @@ export const translations = {
       subtitle: "Descubre propiedades exclusivas a nivel nacional e internacional. El lugar perfecto para vivir o invertir te está esperando.",
       cta: "Ver Cabañas",
       search_dest: "Destino",
-      search_dates: "Fechas",
-      search_dates_ph: "Seleccionar fechas",
-      search_guests: "Huéspedes",
-      search_guests_ph: "2 Adultos",
+      search_dest_ph: "¿A dónde vas?",
+      search_dates: "Entrada - Salida",
+      search_check_in: "Llegada",
+      search_check_out: "Salida",
+      search_guests: "Viajeros",
+      search_guests_ph: "¿Cuántos?",
       search_btn: "BUSCAR"
     },
     properties: {
@@ -51,6 +53,19 @@ export const translations = {
       error: "Ocurrió un error",
       details: "Ver Detalles",
       price_night: "/ noche"
+    },
+    details: {
+      back: "Volver a la lista",
+      price_night: "Precio por noche",
+      book_now: "Reservar Ahora",
+      no_charge: "No se hará ningún cargo todavía",
+      services: "Servicios",
+      description: "Descripción",
+      loading: "Cargando...",
+      wifi: "Wifi Gratis",
+      ac: "Aire Acondicionado",
+      pool: "Piscina",
+      default_desc: "Disfruta de una estancia inolvidable en {hotelName}. Este alojamiento cuenta con todas las comodidades para que tus vacaciones sean perfectas."
     },
     catalog: {
       title: "Catálogo Completo",
@@ -154,10 +169,12 @@ export const translations = {
       subtitle: "Discover exclusive properties nationally and internationally. The perfect place to live or invest is waiting for you.",
       cta: "View Cabins",
       search_dest: "Destination",
-      search_dates: "Dates",
-      search_dates_ph: "Select dates",
+      search_dest_ph: "Where are you going?",
+      search_dates: "Check-in - Check-out",
+      search_check_in: "Check-in",
+      search_check_out: "Check-out",
       search_guests: "Guests",
-      search_guests_ph: "2 Adults",
+      search_guests_ph: "Add guests",
       search_btn: "SEARCH"
     },
     properties: {
@@ -173,6 +190,19 @@ export const translations = {
       error: "An error occurred",
       details: "View Details",
       price_night: "/ night"
+    },
+    details: {
+      back: "Back to list",
+      price_night: "Price per night",
+      book_now: "Reserve Now",
+      no_charge: "You won't be charged yet",
+      services: "Amenities",
+      description: "Description",
+      loading: "Loading...",
+      wifi: "Free Wifi",
+      ac: "Air Conditioning",
+      pool: "Swimming Pool",
+      default_desc: "Enjoy an unforgettable stay at {hotelName}. This accommodation has all the amenities to make your vacation perfect."
     },
     catalog: {
       title: "Full Catalog",
@@ -276,10 +306,12 @@ export const translations = {
       subtitle: "Découvrez des propriétés exclusives au niveau national et international. L'endroit idéal pour vivre ou investir vous attend.",
       cta: "Voir les Cabanes",
       search_dest: "Destination",
-      search_dates: "Dates",
-      search_dates_ph: "Sélectionner dates",
+      search_dest_ph: "Où allez-vous ?",
+      search_dates: "Arrivée - Départ",
+      search_check_in: "Arrivée",
+      search_check_out: "Départ",
       search_guests: "Voyageurs",
-      search_guests_ph: "2 Adultes",
+      search_guests_ph: "Ajouter des voyageurs",
       search_btn: "RECHERCHER"
     },
     properties: {
@@ -295,6 +327,19 @@ export const translations = {
       error: "Une erreur est survenue",
       details: "Voir Détails",
       price_night: "/ nuit"
+    },
+    details: {
+      back: "Retour à la liste",
+      price_night: "Prix par nuit",
+      book_now: "Réserver",
+      no_charge: "Aucun frais pour le moment",
+      services: "Équipements",
+      description: "Description",
+      loading: "Chargement...",
+      wifi: "Wifi Gratuit",
+      ac: "Climatisation",
+      pool: "Piscine",
+      default_desc: "Profitez d'un séjour inoubliable à {hotelName}. Cet hébergement dispose de toutes les commodités pour rendre vos vacances parfaites."
     },
     catalog: {
       title: "Catalogue Complet",
