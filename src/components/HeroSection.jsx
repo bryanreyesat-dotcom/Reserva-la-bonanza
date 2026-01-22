@@ -35,14 +35,24 @@ export default function HeroSection() {
         <div className="relative z-10 w-full max-w-5xl mx-auto mt-[-40px]">
           
           {/* Badge de Ubicación */}
-          <span className="inline-block py-1 px-4 rounded-full bg-white/10 backdrop-blur-md text-white text-xs font-bold tracking-widest uppercase mb-6 border border-white/20">
-            Santa Marta, Colombia
+          <span className="inline-block py-2 px-5 rounded-full bg-white/10 backdrop-blur-md text-white text-sm md:text-lg font-bold tracking-widest uppercase mb-6 border border-white/20 shadow-md">
+          Santa Marta, Colombia
           </span>
           
           {/* Títulos Traducidos */}
-          <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-xl tracking-tight leading-[1.1]">
-            {t('hero.title')}
-          </h2>
+<h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 drop-shadow-xl tracking-tight leading-[1.1]">
+  {/* Parte 1: Texto Blanco Normal */}
+  {t('hero.title1')}
+  
+  {/* Salto de línea solo en pantallas medianas/grandes */}
+  <br className="hidden md:block" /> 
+  <span className="md:hidden"> </span>
+
+  {/* Parte 2: Texto "Llamativo" con degradado azulado/blanco */}
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-white to-blue-100">
+    {t('hero.title2')}
+  </span>
+</h2>
           <p className="text-lg md:text-2xl text-gray-100 font-light mb-12 max-w-2xl mx-auto drop-shadow-md">
              {t('hero.subtitle')}
           </p>

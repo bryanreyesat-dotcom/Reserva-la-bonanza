@@ -2,7 +2,7 @@
  * SECCIÓN 1: IMPORTACIONES Y LIBRERÍAS
  * ======================================================================== */
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { LayoutDashboard, LogOut, User, Briefcase, Building } from 'lucide-react';
 
 /* ========================================================================
@@ -17,6 +17,7 @@ import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
 import GridAlojamientos from './components/GridAlojamientos';
 import PropertyDetail from './components/PropertyDetail';
+import ElegantLoader from './components/ElegantLoader';
 
 // Componentes Privados (App Interna)
 import Dashboard from './components/Dashboard';
@@ -203,7 +204,7 @@ function App() {
   // 5.4 RENDERIZADO DE VISTAS (Lo que ve el usuario)
   
   // Pantalla de Carga
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
+   if (loading) return <ElegantLoader />;
 
   // VISTA A: PANEL ADMIN (Socios)
   if (session && isAdmin) {
@@ -223,10 +224,11 @@ function App() {
     );
   }
 
-  // VISTA C: PÁGINA PÚBLICA (Sin loguear)
-return (
+// VISTA C: PÁGINA PÚBLICA (Sin loguear)
+  return (
     <LanguageProvider>
-      <Router>
+      {/* ❌ AQUÍ BORRAMOS <Router> QUE SOBRABA */}
+      
         <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-800">
           <Navbar user={user} onLogout={handleLogout} />
           
@@ -234,7 +236,6 @@ return (
             <Routes>
               
               {/* 1. RUTA INICIO (HOME) */}
-              {/* Aquí ponemos el Hero + el Grid limitado a 3 hoteles */}
               <Route path="/" element={
                 <>
                   <HeroSection />
@@ -245,7 +246,6 @@ return (
               <Route path="/propiedad/:id" element={<PropertyDetail />} />
 
               {/* 2. RUTA PROPIEDADES (TODAS) */}
-              {/* Aquí ponemos el Grid SIN límite para que muestre todo */}
               <Route path="/propiedades" element={<GridAlojamientos />} />
 
               {/* 3. RUTA LOGIN */}
@@ -256,7 +256,8 @@ return (
 
           <Footer />
         </div>
-      </Router>
+      
+
     </LanguageProvider>
   );
 }

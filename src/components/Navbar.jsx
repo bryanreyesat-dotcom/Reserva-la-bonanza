@@ -65,9 +65,9 @@ const Navbar = ({ user, onLogout }) => {
                   />
               </div>
               {/* Ajusté el texto para que se adapte mejor en móviles muy pequeños */}
-              <span className="font-bold text-lg sm:text-xl text-gray-800 tracking-tight leading-none truncate">
-                Reserva<span className="text-indigo-600"> la<span className="text-indigo-600">&nbsp;Bonanza</span></span>
-              </span>
+              <span className="text-xl font-bold text-gray-900 tracking-tight drop-shadow-md">
+                Reserva La Bonanza
+                </span>
             </Link>
 
             {/* B. MENÚ DE ESCRITORIO (Hidden on Mobile) */}

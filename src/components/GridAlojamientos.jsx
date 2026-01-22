@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../backend/supabaseClient';
 import PropertyCard from './PropertyCard';
+import ElegantLoader from './ElegantLoader';
 // NUEVO: Agregamos useSearchParams aquí
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -55,7 +56,7 @@ const GridAlojamientos = ({ limit }) => {
     fetchAlojamientos();
   }, [limit, busqueda]); // NUEVO: Agregamos 'busqueda' para que se recargue si cambia
 
-  if (loading) return <div className="text-center py-20">Cargando...</div>;
+  if (loading) return <ElegantLoader />;
   if (error) return null;
 
   // Lógica para el título dinámico

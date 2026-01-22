@@ -28,7 +28,8 @@ export const translations = {
       register_demo: "Registrar Demo"
     },
     hero: {
-      title: "Encuentra tu hogar ideal donde tú lo sueñes",
+      title1: "Encuentra la estancia perfecta",
+      title2: "para tus vacaciones soñadas",
       subtitle: "Descubre propiedades exclusivas a nivel nacional e internacional. El lugar perfecto para vivir o invertir te está esperando.",
       cta: "Ver Cabañas",
       search_dest: "Destino",
@@ -165,7 +166,8 @@ export const translations = {
       register_demo: "Register Demo"
     },
     hero: {
-      title: "Find your ideal home wherever you dream of it",
+      title1: "Find the perfect stay",
+      title2: "for your dream vacation",
       subtitle: "Discover exclusive properties nationally and internationally. The perfect place to live or invest is waiting for you.",
       cta: "View Cabins",
       search_dest: "Destination",
@@ -302,7 +304,8 @@ export const translations = {
       register_demo: "Inscrire Démo"
     },
     hero: {
-      title: "Trouvez votre maison idéale là où vous en rêvez",
+      title1: "Trouvez le séjour parfait",
+      title2: "pour vos vacances de rêve",
       subtitle: "Découvrez des propriétés exclusives au niveau national et international. L'endroit idéal pour vivre ou investir vous attend.",
       cta: "Voir les Cabanes",
       search_dest: "Destination",
