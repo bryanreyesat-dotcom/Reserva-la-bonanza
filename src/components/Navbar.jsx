@@ -78,15 +78,16 @@ const Navbar = ({ user, onLogout }) => {
                 <LanguageSelector />
               </div>
               
-              {/* Enlaces de Navegación */}
+              
+              {/* Enlaces de Navegación - Escritorio */}
               {NAV_ITEMS.map((item) => (
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-md ${
+                  className={`text-base font-bold transition-colors duration-200 px-3 py-2 rounded-md ${
                     isActiveLink(item.path) 
                       ? 'text-indigo-600 bg-indigo-50' 
-                      : 'text-gray-600 hover:text-indigo-600 hover:bg-gray-50'
+                      : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                   }`}
                 >
                   {t(item.key)}
@@ -146,22 +147,22 @@ const Navbar = ({ user, onLogout }) => {
                  </div>
                  <LanguageSelector />
               </div>
-
+              
+              {/* Enlaces de Navegación - Móvil */}
               {NAV_ITEMS.map((item) => (
                 <Link 
                   key={item.path}
                   to={item.path} 
                   onClick={closeMobileMenu} 
-                  className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                  className={`block px-4 py-3 rounded-xl text-lg font-bold transition-colors ${
                     isActiveLink(item.path)
                       ? 'bg-indigo-50 text-indigo-700'
-                      : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                      : 'text-gray-800 hover:text-indigo-600 hover:bg-gray-50'
                   }`}
                 >
                   {t(item.key)}
                 </Link>
               ))}
-              
               <div className="border-t border-gray-100 my-4 pt-4">
                 {user ? (
                   <div className="space-y-4">

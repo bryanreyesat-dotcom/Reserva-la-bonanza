@@ -66,7 +66,7 @@ export default function HeroSection() {
       </div>
 
       {/* --- 3.2 BARRA DE CONFIANZA (TRUST BAR) --- */}
-      <div className={`${BRAND.colors.bgPrimary || 'bg-gray-900'} py-3 text-center text-white text-sm font-medium border-t border-white/10 shadow-inner relative z-10`}>
+      <div className="bg-sky-600 py-3 text-center text-white text-sm font-medium border-t border-white/10 shadow-inner relative z-10">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-2 md:gap-6">
           
           <div className="flex items-center gap-2 bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
