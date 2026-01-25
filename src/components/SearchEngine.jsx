@@ -3,7 +3,7 @@ import { Search, MapPin, Calendar as CalendarIcon, User, Minus, Plus } from 'luc
 import { useNavigate } from 'react-router-dom';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import es from 'date-fns/locale/es'; // Para poner el calendario en español
+import { es } from 'date-fns/locale'; // Corrección en la importación para versiones nuevas
 
 // Registramos el idioma español
 registerLocale('es', es);
@@ -13,12 +13,10 @@ const SearchEngine = () => {
   
   // Estados para abrir/cerrar menús
   const [showGuestMenu, setShowGuestMenu] = useState(false);
-  
-  // Referencias para detectar clics fuera
   const guestMenuRef = useRef(null);
 
-  // ESTADO DE BÚSQUEDA
-  const [location, setLocation] = useState(''); // Arranca vacío para obligar a elegir
+  // ESTADOS DE BÚSQUEDA
+  const [location, setLocation] = useState(''); 
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
   const [guests, setGuests] = useState({
@@ -26,7 +24,7 @@ const SearchEngine = () => {
     children: 0
   });
 
-  // Cerrar menús al hacer clic fuera
+  // Cerrar menú al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(event) {
       if (guestMenuRef.current && !guestMenuRef.current.contains(event.target)) {
@@ -39,16 +37,15 @@ const SearchEngine = () => {
 
   // Lógica de contadores (Huéspedes)
   const updateGuests = (type, operation, e) => {
-    e.preventDefault(); // Evita que el botón recargue la página
-    e.stopPropagation(); // Evita que se cierre el menú
+    e.preventDefault();
+    e.stopPropagation();
     
     setGuests(prev => {
       const currentVal = prev[type];
       const newVal = operation === 'inc' ? currentVal + 1 : currentVal - 1;
       
-      // Validaciones
       if (newVal < 0) return prev; 
-      if (type === 'adultos' && newVal < 1) return prev; // Mínimo 1 adulto
+      if (type === 'adults' && newVal < 1) return prev; 
       
       return { ...prev, [type]: newVal };
     });
@@ -57,16 +54,14 @@ const SearchEngine = () => {
   const handleSearch = (e) => {
     if(e) e.preventDefault();
     
-    // Creamos una herramienta para construir la URL
     const params = new URLSearchParams();
 
-    // 1. UBICACIÓN: Si el usuario eligió algo que no sea "Todo"
-    // Esto conectará con el filtro que hicimos en AllProperties
+    // 1. UBICACIÓN
     if (location && location !== "Santa Marta") {
       params.append('busqueda', location);
     }
 
-    // 2. FECHAS (Las enviamos por si quieres usarlas en el futuro)
+    // 2. FECHAS (Aquí está la lógica de los "3 días")
     if (startDate) params.append('checkin', startDate.toISOString());
     if (endDate) params.append('checkout', endDate.toISOString());
 
@@ -74,28 +69,27 @@ const SearchEngine = () => {
     params.append('adultos', guests.adults);
     params.append('ninos', guests.children);
 
-    // Navegamos pasando los datos en la URL
-    // Ejemplo resultante: /propiedades?busqueda=Rodadero&adultos=2
+    // Navegar a la página de resultados
     navigate(`/propiedades?${params.toString()}`);
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto relative z-50">
-      <div className="bg-white rounded-[2rem] shadow-2xl p-2 flex flex-col md:flex-row items-center border border-gray-200">
+    <div className="w-full max-w-5xl mx-auto relative z-40 -mt-10 px-4">
+      <div className="bg-white rounded-[2.5rem] shadow-2xl p-2 flex flex-col md:flex-row items-center border border-gray-100 animate-in fade-in-up duration-500">
         
         {/* === 1. DESTINO === */}
-        <div className="relative w-full md:w-[30%] px-6 py-2 border-b md:border-b-0 md:border-r border-gray-200 hover:bg-gray-50 rounded-[2rem] transition-colors group">
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+        <div className="relative w-full md:w-[30%] px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100 hover:bg-gray-50 rounded-[2rem] transition-colors group">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-sky-600 transition-colors">
             Destino
           </label>
           <div className="flex items-center">
-            <MapPin size={22} className="text-gray-400 mr-3 group-hover:text-indigo-600 transition-colors" />
+            <MapPin size={20} className="text-gray-400 mr-2 group-hover:text-sky-600 transition-colors" />
             <select 
-              className="w-full text-lg font-bold text-gray-800 outline-none bg-transparent cursor-pointer appearance-none truncate py-1"
+              className="w-full text-base font-bold text-gray-700 outline-none bg-transparent cursor-pointer appearance-none truncate"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             >
-              <option value="" className="text-gray-400">¿A dónde vas?</option>
+              <option value="">¿A dónde vas?</option>
               <option value="Santa Marta">Santa Marta (Todo)</option>
               <option value="Rodadero">El Rodadero</option>
               <option value="Taganga">Taganga</option>
@@ -105,13 +99,13 @@ const SearchEngine = () => {
           </div>
         </div>
 
-        {/* === 2. CALENDARIO (React Datepicker) === */}
-        <div className="relative w-full md:w-[35%] px-6 py-2 border-b md:border-b-0 md:border-r border-gray-200 hover:bg-gray-50 rounded-[2rem] transition-colors group z-50">
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
-            Entrada / Salida
+        {/* === 2. CALENDARIO MODERNO === */}
+        <div className="relative w-full md:w-[40%] px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100 hover:bg-gray-50 rounded-[2rem] transition-colors group z-50">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-indigo-600 transition-colors">
+            Check-in / Check-out
           </label>
           <div className="flex items-center w-full">
-            <CalendarIcon size={22} className="text-gray-400 mr-3 group-hover:text-indigo-600 transition-colors" />
+            <CalendarIcon size={20} className="text-gray-400 mr-2 group-hover:text-indigo-600 transition-colors" />
             <div className="w-full custom-datepicker-wrapper">
               <DatePicker
                 selectsRange={true}
@@ -120,81 +114,67 @@ const SearchEngine = () => {
                 onChange={(update) => setDateRange(update)}
                 isClearable={true}
                 placeholderText="Agregar fechas"
-                className="w-full text-lg font-bold text-gray-800 outline-none bg-transparent cursor-pointer placeholder-gray-400"
+                className="w-full text-base font-bold text-gray-700 outline-none bg-transparent cursor-pointer placeholder-gray-400"
                 locale="es"
                 dateFormat="dd MMM"
                 minDate={new Date()}
-                // ESTO HACE QUE EL CALENDARIO SE ABRA ARRIBA O DONDE QUEPA
-                popperPlacement="bottom-start" 
-                popperModifiers={[
-                  {
-                    name: "preventOverflow",
-                    options: {
-                      rootBoundary: "viewport",
-                      tether: false,
-                      altAxis: true, 
-                    },
-                  },
-                ]}
+                popperPlacement="bottom"
               />
             </div>
           </div>
         </div>
 
         {/* === 3. HUÉSPEDES === */}
-        <div ref={guestMenuRef} className="relative w-full md:w-[35%] pl-6 pr-2 py-2">
-          <div 
-            className="cursor-pointer hover:bg-gray-50 rounded-[2rem] p-2 transition-colors -ml-2 pl-4 flex items-center justify-between"
-            onClick={() => setShowGuestMenu(!showGuestMenu)}
-          >
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
-                Viajeros
-              </label>
-              <div className="flex items-center">
-                <User size={22} className="text-gray-400 mr-3" />
-                <span className="text-lg font-bold text-gray-800 truncate">
-                  {guests.adults + guests.children} Huéspedes
-                </span>
-              </div>
+        <div ref={guestMenuRef} className="relative w-full md:w-[30%] pl-6 pr-2 py-2 flex items-center justify-between hover:bg-gray-50 rounded-[2rem] cursor-pointer transition-colors"
+             onClick={() => setShowGuestMenu(!showGuestMenu)}>
+          
+          <div>
+            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Viajeros
+            </label>
+            <div className="flex items-center">
+              <User size={20} className="text-gray-400 mr-2" />
+              <span className="text-base font-bold text-gray-700 truncate">
+                {guests.adults + guests.children} Huéspedes
+              </span>
             </div>
-            
-            {/* BOTÓN BUSCAR */}
-            <button 
-              onClick={(e) => { e.stopPropagation(); handleSearch(e); }}
-              className="bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-full shadow-lg hover:shadow-orange-200 transition-all transform hover:scale-105 flex items-center justify-center ml-4"
-            >
-              <Search size={24} strokeWidth={3} />
-            </button>
           </div>
+            
+          {/* BOTÓN DE BÚSQUEDA (Gradiente Azul) */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); handleSearch(e); }}
+            className="bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white p-4 rounded-full shadow-lg hover:shadow-indigo-200 transition-all transform hover:scale-105 flex items-center justify-center ml-2"
+          >
+            <Search size={20} strokeWidth={3} />
+          </button>
 
-          {/* === POPUP MENU (Hacia ARRIBA) === */}
+          {/* === POPUP MENU DE HUÉSPEDES === */}
           {showGuestMenu && (
-            <div className="absolute bottom-[110%] right-0 w-full md:w-80 bg-white rounded-3xl shadow-2xl p-6 border border-gray-100 z-[60] animate-in slide-in-from-bottom-2 fade-in">
+            <div className="absolute top-[120%] right-0 w-full md:w-80 bg-white rounded-3xl shadow-xl p-6 border border-gray-100 z-[60] cursor-default animate-in fade-in slide-in-from-top-5">
               
               {/* Adultos */}
-              <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+              <div className="flex justify-between items-center mb-6 border-b border-gray-50 pb-4">
                 <div>
-                  <p className="font-bold text-lg text-gray-800">Adultos</p>
-                  <p className="text-sm text-gray-400">13 años o más</p>
+                  <p className="font-bold text-gray-800">Adultos</p>
+                  <p className="text-xs text-gray-400">13 años o más</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <CounterBtn onClick={(e) => updateGuests('adults', 'dec', e)} disabled={guests.adults <= 1} icon={<Minus size={16}/>} />
-                  <span className="w-6 text-center font-bold text-xl text-gray-800">{guests.adults}</span>
-                  <CounterBtn onClick={(e) => updateGuests('adults', 'inc', e)} icon={<Plus size={16}/>} />
+                <div className="flex items-center gap-3">
+                  <CounterBtn onClick={(e) => updateGuests('adults', 'dec', e)} disabled={guests.adults <= 1} icon={<Minus size={14}/>} />
+                  <span className="w-4 text-center font-bold text-gray-800">{guests.adults}</span>
+                  <CounterBtn onClick={(e) => updateGuests('adults', 'inc', e)} icon={<Plus size={14}/>} />
                 </div>
               </div>
 
               {/* Niños */}
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="font-bold text-lg text-gray-800">Niños</p>
-                  <p className="text-sm text-gray-400">De 2 a 12 años</p>
+                  <p className="font-bold text-gray-800">Niños</p>
+                  <p className="text-xs text-gray-400">De 2 a 12 años</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <CounterBtn onClick={(e) => updateGuests('children', 'dec', e)} disabled={guests.children <= 0} icon={<Minus size={16}/>} />
-                  <span className="w-6 text-center font-bold text-xl text-gray-800">{guests.children}</span>
-                  <CounterBtn onClick={(e) => updateGuests('children', 'inc', e)} icon={<Plus size={16}/>} />
+                <div className="flex items-center gap-3">
+                  <CounterBtn onClick={(e) => updateGuests('children', 'dec', e)} disabled={guests.children <= 0} icon={<Minus size={14}/>} />
+                  <span className="w-4 text-center font-bold text-gray-800">{guests.children}</span>
+                  <CounterBtn onClick={(e) => updateGuests('children', 'inc', e)} icon={<Plus size={14}/>} />
                 </div>
               </div>
 
@@ -204,28 +184,52 @@ const SearchEngine = () => {
 
       </div>
       
-      {/* Estilos CSS inline para limpiar el datepicker por defecto */}
+      {/* ESTILOS DEL CALENDARIO (TEMA AZUL) */}
       <style>{`
         .react-datepicker-wrapper { width: 100%; }
         .react-datepicker__input-container input { width: 100%; outline: none; }
-        .react-datepicker { border-radius: 1.5rem; border: none; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); overflow: hidden; font-family: inherit; }
+        .react-datepicker { border-radius: 1.5rem; border: none; box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.15); font-family: inherit; overflow: hidden; }
         .react-datepicker__header { background: white; border-bottom: 1px solid #f3f4f6; padding-top: 1rem; }
-        .react-datepicker__day--selected, .react-datepicker__day--in-range { background-color: #f97316 !important; color: white; border-radius: 50%; }
-        .react-datepicker__day--in-selecting-range { background-color: #ffedd5 !important; color: #f97316; }
+        .react-datepicker__current-month { color: #374151; font-weight: 800; text-transform: capitalize; margin-bottom: 0.5rem; }
+        .react-datepicker__day-name { color: #9ca3af; font-weight: 700; text-transform: uppercase; font-size: 0.7rem; }
+        
+        /* Días Seleccionados (Fondo Azul Índigo) */
+        .react-datepicker__day--selected, 
+        .react-datepicker__day--range-end,
+        .react-datepicker__day--range-start { 
+            background-color: #4f46e5 !important; /* Indigo-600 */
+            color: white !important; 
+            border-radius: 50%; 
+            font-weight: bold;
+        }
+        
+        /* Rango intermedio (Azul clarito) */
+        .react-datepicker__day--in-range,
+        .react-datepicker__day--in-selecting-range { 
+            background-color: #e0e7ff !important; /* Indigo-100 */
+            color: #4f46e5 !important;
+            border-radius: 0;
+        }
+        
+        .react-datepicker__day--range-start { border-top-left-radius: 50%; border-bottom-left-radius: 50%; }
+        .react-datepicker__day--range-end { border-top-right-radius: 50%; border-bottom-right-radius: 50%; }
+        
         .react-datepicker__day:hover { border-radius: 50%; background-color: #f3f4f6; }
+        .react-datepicker__day--keyboard-selected { background-color: transparent; color: inherit; }
         .react-datepicker__triangle { display: none; }
+        .react-datepicker__navigation-icon::before { border-color: #4b5563; border-width: 2px 2px 0 0; }
       `}</style>
     </div>
   );
 };
 
-// Componente pequeño de botón
+// Componente pequeño de botón auxiliar
 const CounterBtn = ({ onClick, icon, disabled }) => (
   <button 
-    type="button" // Importante para no enviar formulario
+    type="button" 
     onClick={onClick}
     disabled={disabled}
-    className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${disabled ? 'border-gray-100 text-gray-300' : 'border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-500 active:scale-90'}`}
+    className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all ${disabled ? 'border-gray-100 text-gray-300' : 'border-gray-200 text-gray-600 hover:border-indigo-600 hover:text-indigo-600 active:scale-90'}`}
   >
     {icon}
   </button>

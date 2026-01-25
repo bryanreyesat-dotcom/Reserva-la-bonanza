@@ -18,6 +18,7 @@ import HeroSection from './components/HeroSection';
 import GridAlojamientos from './components/GridAlojamientos';
 import PropertyDetail from './components/PropertyDetail';
 import ElegantLoader from './components/ElegantLoader';
+import ReservationPage from './components/ReservationPage';
 
 // Componentes Privados (App Interna)
 import Dashboard from './components/Dashboard';
@@ -250,6 +251,10 @@ function App() {
 
               {/* 3. RUTA LOGIN */}
               <Route path="/login" element={<LoginPage onLogin={actualizarEstado} />} />
+
+              <Route path="/reservar" element={<ReservationPage />} />
+
+              <Route path="/confirmacion" element={<ConfirmationPage />} /> {/* <--- AGREGAR ESTA RUTA */}
 
             </Routes>
           </div>

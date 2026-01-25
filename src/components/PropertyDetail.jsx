@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../backend/supabaseClient';
 import { useLanguage } from '../context/LanguageContext';
 import { Wifi, Wind, Waves, ArrowLeft, MapPin, Star } from 'lucide-react';
+import BookingCard from '../components/BookingCard';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -67,9 +68,7 @@ const PropertyDetail = () => {
     ? hotel.descripcion 
     : t('details.default_desc').replace('{hotelName}', hotel.titulo);
 
-  const precio = new Intl.NumberFormat('es-CO', {
-    style: 'currency', currency: 'COP', maximumFractionDigits: 0
-  }).format(hotel.precio_noche);
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -147,25 +146,16 @@ const PropertyDetail = () => {
           </div>
         </div>
 
-        {/* Tarjeta Derecha */}
+{/* Tarjeta Derecha */}
         <div className="w-full md:w-[350px] flex-shrink-0 sticky top-24 z-10">
-            <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100">
-                <div className="flex justify-between items-end mb-6">
-                    <div>
-                        <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">
-                            {t('details.price_night')}
-                        </p>
-                        <p className="text-3xl font-extrabold text-gray-900">{precio}</p>
-                    </div>
-                </div>
-                <button className="w-full bg-[#117e76] hover:bg-[#0f6b64] text-white text-lg font-bold py-4 rounded-xl shadow-lg hover:shadow-[#117e76]/40 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 mb-4">
-                    {t('details.book_now')}
-                </button>
-                <div className="flex items-center justify-center gap-2 text-gray-400 text-xs">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    <span>{t('details.no_charge')}</span>
-                </div>
-            </div>
+            {/* AQUÍ BORRAMOS EL CÓDIGO VIEJO Y PONEMOS EL COMPONENTE INTELIGENTE */}
+            <BookingCard 
+                pricePerNight={hotel.precio_noche} 
+                propertyName={hotel.titulo}
+                propertyId={hotel.id}
+                rating={hotel.calificacion || 4.8}
+                reviews={120} // Puedes traer esto de la BD si lo tienes
+            />
         </div>
 
       </div>
