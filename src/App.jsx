@@ -19,6 +19,7 @@ import GridAlojamientos from './components/GridAlojamientos';
 import PropertyDetail from './components/PropertyDetail';
 import ElegantLoader from './components/ElegantLoader';
 import ReservationPage from './components/ReservationPage';
+import ConfirmationPage from './components/ConfirmationPage';
 
 // Componentes Privados (App Interna)
 import Dashboard from './components/Dashboard';
