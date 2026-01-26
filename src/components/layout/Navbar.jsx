@@ -4,11 +4,11 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, LogOut, User, Globe } from 'lucide-react'; // Agregué Globe para decorar
-import { useLanguage } from '../context/LanguageContext';
-import LanguageSelector from './LanguageSelector';
+import { useLanguage } from '../../context/LanguageContext';
+import LanguageSelector from '../LanguageSelector';
 
 // Activos
-import logo from '../assets/logo-bonanza.jpeg';
+import logo from '../../assets/logo-bonanza.jpeg';
 
 /* ========================================================================
  * SECCIÓN 2: CONFIGURACIÓN
@@ -16,7 +16,7 @@ import logo from '../assets/logo-bonanza.jpeg';
 const NAV_ITEMS = [
   { path: '/', key: 'navbar.home' },
   { path: '/propiedades', key: 'navbar.properties' },
-  { path: '/nosotros', key: 'navbar.about' }
+  { path: '/sobre-nosotros', key: 'navbar.about' }
 ];
 
 /* ========================================================================

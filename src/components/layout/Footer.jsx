@@ -2,9 +2,10 @@
  * SECCIÓN 1: IMPORTACIONES
  * ======================================================================== */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, Mail, Clock, Facebook, Instagram, Twitter } from 'lucide-react';
-import { BRAND } from '../config/brand';
-import { useLanguage } from '../context/LanguageContext';
+import { BRAND } from '../../config/brand';
+import { useLanguage } from '../../context/LanguageContext';
 
 /* ========================================================================
  * SECCIÓN 2: DATOS Y CONFIGURACIÓN
@@ -91,15 +92,25 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* COLUMNA 3: LEGAL */}
+{/* COLUMNA 3: LEGAL */}
         <div>
            <h4 className="font-bold mb-6 text-gray-200">
              {t('footer.legal_title')}
            </h4>
            <ul className="space-y-3 text-gray-400 text-sm">
-              {['about_us', 'terms', 'privacy', 'rnt'].map((key) => (
-                  <li key={key} className="hover:text-white cursor-pointer transition-colors">
-                      {t(`footer.${key}`)}
+              {/* Enlace a Sobre Nosotros */}
+              <li>
+                  <Link to="/sobre-nosotros" className="hover:text-white cursor-pointer transition-colors">
+                      {t('footer.about_us')}
+                  </Link>
+              </li>
+
+              {/* Los demás enlaces (puedes dejarlos con '#' por ahora si no tienes esas páginas) */}
+              {['terms', 'privacy', 'rnt'].map((key) => (
+                  <li key={key}>
+                      <a href="#" className="hover:text-white cursor-pointer transition-colors">
+                          {t(`footer.${key}`)}
+                      </a>
                   </li>
               ))}
            </ul>

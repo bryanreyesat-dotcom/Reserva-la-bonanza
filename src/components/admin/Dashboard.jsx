@@ -2,7 +2,7 @@
  * SECCIÓN 1: IMPORTACIONES
  * ======================================================================== */
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../backend/supabaseClient';
+import { supabase } from '../../../backend/supabaseClient';
 import { LogOut, Building, MapPin, Calendar, DollarSign, User, Search } from 'lucide-react';
 
 /* ========================================================================

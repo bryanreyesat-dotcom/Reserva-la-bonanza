@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../backend/supabaseClient';
 import PropertyCard from './PropertyCard';
-import ElegantLoader from './ElegantLoader';
+import ElegantLoader from '../components/ui/ElegantLoader';
 // NUEVO: Agregamos useSearchParams aquí
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
