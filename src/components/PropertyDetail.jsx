@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { supabase } from '../../backend/supabaseClient';
+import { supabase } from '../../backend/supabaseClient'; // Asegúrate que la ruta sea correcta
 import { useLanguage } from '../context/LanguageContext';
-import { Wifi, Wind, Waves, ArrowLeft, MapPin, Star } from 'lucide-react';
+import { 
+  Wifi, Wind, Waves, ArrowLeft, MapPin, Star, 
+  Tv, Utensils, Car, Trees, Lock, Coffee 
+} from 'lucide-react'; // Importamos más íconos
 import BookingCard from '../components/BookingCard';
+
+// 1. DICCIONARIO DE ÍCONOS (Frontend)
+// Conecta el ID de la base de datos con el Ícono visual y el texto
+const AMENITY_MAP = {
+  wifi:    { icon: Wifi, label: 'Wifi Gratis' },
+  ac:      { icon: Wind, label: 'Aire Acondicionado' },
+  pool:    { icon: Waves, label: 'Piscina' },
+  tv:      { icon: Tv, label: 'Smart TV' },
+  kitchen: { icon: Utensils, label: 'Cocina Equipada' },
+  parking: { icon: Car, label: 'Parqueadero' },
+  balcony: { icon: Trees, label: 'Balcón' },
+  security:{ icon: Lock, label: 'Seguridad' },
+  coffee:  { icon: Coffee, label: 'Cafetera' },
+  view:    { icon: Waves, label: 'Vista al Mar' }
+};
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -14,9 +32,9 @@ const PropertyDetail = () => {
   useEffect(() => {
     const fetchHotel = async () => {
       try {
-        // Seleccionamos TODO (*) de la tabla
+        // Asegúrate que tu tabla se llame 'alojamientos' o 'rooms' (según la creaste en Supabase)
         const { data, error } = await supabase
-          .from('alojamientos')
+          .from('alojamientos') // <--- OJO: Verifica si tu tabla se llama 'rooms' o 'alojamientos'
           .select('*')
           .eq('id', id)
           .single();
@@ -24,7 +42,7 @@ const PropertyDetail = () => {
         if (error) throw error;
         setHotel(data);
       } catch (error) {
-        console.error("Error cargando hotel:", error);
+        console.error("Error cargando propiedad:", error);
       } finally {
         setLoading(false);
       }
@@ -33,42 +51,29 @@ const PropertyDetail = () => {
     fetchHotel();
   }, [id]);
 
-  if (loading) return <div className="h-screen flex items-center justify-center text-gray-500 font-medium">{t('details.loading')}</div>;
-  if (!hotel) return <div className="text-center py-20 text-red-500">Hotel no encontrado</div>;
+  if (loading) return <div className="h-screen flex items-center justify-center text-gray-500 font-medium">{t('details.loading')}...</div>;
+  if (!hotel) return <div className="text-center py-20 text-red-500">Propiedad no encontrada</div>;
 
-  // --- LÓGICA BLINDADA PARA IMÁGENES (SALVAVIDAS) ---
+  // --- LÓGICA DE IMÁGENES ---
+  const fallbackImage = "https://via.placeholder.com/800x600?text=No+Image";
+  // Verificamos si 'images' (nuevo formato) o 'galeria' existe
+  const imagesSource = hotel.images || hotel.galeria || [];
   
-  // 1. Imagen por defecto si todo falla (Gris)
-  const fallbackImage = "https://via.placeholder.com/800x600?text=No+Image+Available";
-
-  // 2. Intentamos obtener la imagen principal, si no existe, usamos el fallback
-  const mainImage = hotel.imagen_url || fallbackImage;
-
-  // 3. Preparamos la galería. 
-  //    Si 'hotel.galeria' existe y tiene fotos, úsala.
-  //    Si NO, crea un array repitiendo la imagen principal 5 veces para rellenar el mosaico.
-  let images = [];
-  
-  if (hotel.galeria && Array.isArray(hotel.galeria) && hotel.galeria.length > 0) {
-      images = hotel.galeria;
+  // Si hay array de imágenes, usamos ese. Si no, usamos imagen_url o fallback
+  let displayImages = [];
+  if (Array.isArray(imagesSource) && imagesSource.length > 0) {
+      displayImages = [...imagesSource];
+  } else if (hotel.imagen_url) {
+      displayImages = [hotel.imagen_url];
   } else {
-      // Si borraste la columna galería, entrará aquí y usará la foto principal repetida
-      images = [mainImage, mainImage, mainImage, mainImage, mainImage];
+      displayImages = [fallbackImage];
   }
 
-  // Aseguramos que siempre haya al menos 5 elementos para que el CSS no se rompa
-  const displayImages = [...images];
+  // Rellenar para mantener el diseño grid si hay pocas fotos
   while (displayImages.length < 5) {
-    displayImages.push(mainImage);
+    displayImages.push(displayImages[0] || fallbackImage);
   }
-
   // --- FIN LÓGICA IMÁGENES ---
-
-  const descriptionText = hotel.descripcion 
-    ? hotel.descripcion 
-    : t('details.default_desc').replace('{hotelName}', hotel.titulo);
-
-
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -78,83 +83,78 @@ const PropertyDetail = () => {
         {t('details.back')}
       </Link>
       
-      
-      {/* --- GALERÍA RESPONSIVE (MÓVIL Y PC) --- */}
+      {/* GALERÍA DE FOTOS */}
       <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-2 md:gap-3 h-auto md:h-[500px] mb-10 rounded-3xl overflow-hidden shadow-xl">
-        
-        {/* Foto Principal: En Móvil es grande (col-span-2) y tiene altura fija (300px) */}
         <div className="col-span-2 md:col-span-2 md:row-span-2 relative group cursor-pointer h-[300px] md:h-full">
            <img 
              src={displayImages[0]} 
              alt="Principal" 
-             onError={(e) => e.target.src = fallbackImage} 
              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
            />
-           <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all"></div>
         </div>
-        
-        {/* Fotos Secundarias: Se muestran siempre. En móvil miden 150px de alto. */}
         {displayImages.slice(1, 5).map((img, index) => (
             <div key={index} className="relative overflow-hidden h-[150px] md:h-full">
-                <img 
-                    src={img} 
-                    alt={`Vista ${index + 2}`}
-                    onError={(e) => e.target.src = fallbackImage} 
-                    className="w-full h-full object-cover opacity-95 hover:opacity-100 transition-all hover:scale-110 duration-500" 
-                />
+                <img src={img} alt={`Vista ${index}`} className="w-full h-full object-cover opacity-95 hover:opacity-100 hover:scale-110 transition-all duration-500" />
             </div>
         ))}
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
         
-        {/* Info Izquierda */}
+        {/* COLUMNA IZQUIERDA: INFORMACIÓN */}
         <div className="flex-1 space-y-8">
           <div>
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-3 leading-tight">{hotel.titulo}</h1>
+            <h1 className="text-4xl font-extrabold text-gray-900 mb-3 leading-tight">{hotel.name || hotel.titulo}</h1>
             <div className="flex flex-wrap items-center gap-4 text-gray-500 text-sm md:text-base">
                 <span className="flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full font-medium">
-                    <MapPin size={16}/> {hotel.ubicacion || 'Santa Marta'}
+                    <MapPin size={16}/> {hotel.address || hotel.ubicacion}
                 </span>
                 <span className="flex items-center gap-1 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full font-medium">
-                    <Star size={16} className="fill-yellow-500 text-yellow-500"/> {hotel.calificacion || '4.8'}
+                    <Star size={16} className="fill-yellow-500 text-yellow-500"/> {hotel.rating || hotel.calificacion || 'New'}
                 </span>
             </div>
           </div>
 
           <div className="prose prose-lg text-gray-600">
             <h3 className="text-xl font-bold text-gray-800 mb-2">{t('details.description')}</h3>
-            <p className="leading-relaxed">{descriptionText}</p>
+            <p className="leading-relaxed whitespace-pre-line">{hotel.description || hotel.descripcion}</p>
           </div>
 
+          {/* --- AQUÍ ESTÁ LA MAGIA DE LOS ÍCONOS DINÁMICOS --- */}
           <div className="border-t border-b border-gray-100 py-6">
             <h3 className="text-xl font-bold text-gray-800 mb-4">{t('details.services')}</h3>
-            <div className="flex flex-wrap gap-4 md:gap-8">
-                <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
-                  <Wifi className="text-blue-600" size={24}/>
-                  <span className="font-semibold text-gray-700">{t('details.wifi')}</span>
-                </div>
-                <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
-                  <Wind className="text-blue-600" size={24}/>
-                  <span className="font-semibold text-gray-700">{t('details.ac')}</span>
-                </div>
-                <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
-                  <Waves className="text-blue-600" size={24}/>
-                  <span className="font-semibold text-gray-700">{t('details.pool')}</span>
-                </div>
+            
+            <div className="flex flex-wrap gap-4 md:gap-6">
+                {/* Verificamos si hay amenities guardados */}
+                {hotel.amenities && Array.isArray(hotel.amenities) && hotel.amenities.length > 0 ? (
+                    hotel.amenities.map((amenityKey) => {
+                        const Item = AMENITY_MAP[amenityKey]; // Buscamos en el diccionario
+                        if (!Item) return null; // Si no existe el ícono, no renderiza nada
+                        
+                        const IconComponent = Item.icon;
+                        return (
+                            <div key={amenityKey} className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl border border-gray-100">
+                                <IconComponent className="text-blue-600" size={24}/>
+                                <span className="font-semibold text-gray-700">{Item.label}</span>
+                            </div>
+                        );
+                    })
+                ) : (
+                    <p className="text-gray-400 italic">No hay servicios especificados.</p>
+                )}
             </div>
           </div>
+          {/* ------------------------------------------------ */}
+
         </div>
 
-{/* Tarjeta Derecha */}
+        {/* TARJETA DERECHA (Booking) */}
         <div className="w-full md:w-[350px] flex-shrink-0 sticky top-24 z-10">
-            {/* AQUÍ BORRAMOS EL CÓDIGO VIEJO Y PONEMOS EL COMPONENTE INTELIGENTE */}
             <BookingCard 
-                pricePerNight={hotel.precio_noche} 
-                propertyName={hotel.titulo}
+                pricePerNight={hotel.price || hotel.precio_noche} 
+                propertyName={hotel.name || hotel.titulo}
                 propertyId={hotel.id}
-                rating={hotel.calificacion || 4.8}
-                reviews={120} // Puedes traer esto de la BD si lo tienes
+                rating={hotel.rating || 4.8}
             />
         </div>
 
