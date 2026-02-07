@@ -8,7 +8,7 @@ import { BRAND } from '../config/brand';
 import SearchEngine from './SearchEngine'; // <--- IMPORTAMOS EL BUSCADOR
 
 // Activos
-import heroImage from "../assets/hero_bg.jpg";
+import heroImage from "../assets/hero_hg.jpg";
 
 /* ========================================================================
  * SECCIÓN 2: COMPONENTE PRINCIPAL

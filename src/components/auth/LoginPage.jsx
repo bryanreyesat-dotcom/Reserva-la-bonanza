@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import { ForgotPasswordModal } from './ForgotPasswordModal';
 import Toast from '../ui/Toast';
-import fondoLogin from "../../assets/hero_bg.jpg"; // Ajusta esta ruta si tu imagen se llama diferente
+import fondoLogin from "../../assets/hero_hg.jpg"; // Ajusta esta ruta si tu imagen se llama diferente
 
 const LoginPage = ({ onLogin }) => {
   const [activeTab, setActiveTab] = useState('login');
